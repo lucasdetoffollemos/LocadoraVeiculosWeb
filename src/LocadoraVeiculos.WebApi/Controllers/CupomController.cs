@@ -22,30 +22,12 @@ namespace LocadoraVeiculos.WebApi.Controllers
         private readonly ICupomAppService cupomAppService;
         private readonly IMapper mapper;
 
-        public CupomController()
+        public CupomController(ICupomRepository cupomRepository, IParceiroRepository parceiroReporitoy, ICupomAppService cupomAppService, IMapper mapper)
         {
-            var dbContext = new LocadoraDbContext();
-
-            this.cupomRepository = new CupomOrmDao(dbContext);
-            this.parceiroReporitoy = new ParceiroOrmDao(dbContext);
-            this.cupomAppService = new CupomAppService(cupomRepository);
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Cupom, CupomListViewModel>()
-                    .ForMember(dest => dest.Tipo, opt => opt.MapFrom(src => (TipoCupomEnum)src.Tipo));
-
-                cfg.CreateMap<Cupom, CupomDetailsViewModel>()
-                    .ForMember(dest => dest.Tipo, opt => opt.MapFrom(src => (int)src.Tipo));
-
-                cfg.CreateMap<CupomCreateViewModel, Cupom>()
-                    .ForMember(dest => dest.Tipo, opt => opt.MapFrom(src => (TipoCupomEnum)src.Tipo));
-
-                cfg.CreateMap<CupomEditViewModel, Cupom>()
-                    .ForMember(dest => dest.Tipo, opt => opt.MapFrom(src => (TipoCupomEnum)src.Tipo));
-            });
-
-            this.mapper = config.CreateMapper();
+            this.cupomRepository = cupomRepository;
+            this.parceiroReporitoy = parceiroReporitoy;
+            this.cupomAppService = cupomAppService;
+            this.mapper = mapper;
         }
 
 

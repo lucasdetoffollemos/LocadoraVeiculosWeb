@@ -21,28 +21,15 @@ namespace LocadoraVeiculos.WebApi.Controllers
         private readonly IParceiroRepository parceiroRepository;
         private readonly IMapper mapper;
 
-        public ParceiroController()
+        public ParceiroController(IMapper mapper, IParceiroRepository parceiroRepository, IParceiroAppService parceiroAppService)
         {
-            var dbContext = new LocadoraDbContext();
+            this.parceiroAppService = parceiroAppService;
 
-            this.parceiroRepository = new ParceiroOrmDao(dbContext);
+            this.mapper = mapper;
 
-            this.parceiroAppService = new ParceiroAppService(this.parceiroRepository);
+            this.parceiroRepository = parceiroRepository;
 
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Parceiro, ParceiroListViewModel>();
-
-                cfg.CreateMap<Parceiro, ParceiroDetailsViewModel>();
-
-                cfg.CreateMap<ParceiroCreateViewModel, Parceiro>();
-
-                cfg.CreateMap<ParceiroEditViewModel, Parceiro>();
-
-                cfg.CreateMap<Cupom, CupomListViewModel>();
-            });            
-
-            this.mapper = config.CreateMapper();
+           
         }
 
         [HttpGet]
