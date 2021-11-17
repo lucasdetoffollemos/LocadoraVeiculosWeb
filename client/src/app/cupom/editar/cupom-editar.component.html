@@ -1,0 +1,55 @@
+<div class="container main-container">
+    <h4>Editar Cupom</h4>
+    <hr />
+    <form novalidate [formGroup]="cadastroForm" (ngSubmit)='atualizarCupom()'>
+        <div clas="form-group">
+            <label class="col-md-2 control-label" for="nome">Nome</label>
+            <div class="col-md-10">
+                <input class="form-control" id="nome" type="text" placeholder="Nome (requerido)"
+                    formControlName="nome" />
+            </div>
+            <label class="col-md-2 control-label" for="valor">Valor</label>
+            <div class="col-md-10">
+                <input class="form-control" id="valor" type="text" placeholder="Valor (requerido)"
+                    formControlName="valor" />
+            </div>
+            <label class="col-md-2 control-label" for="valorMinimo">Valor Mínimo</label>
+            <div class="col-md-10">
+                <input class="form-control" id="valorMinimo" type="text" placeholder="Valor Mínimo (requerido)"
+                    formControlName="valorMinimo" />
+            </div>
+            <label class="col-md-2 control-label" for="dataValidade">Data Validade</label>
+            <div>
+                <div class="col-md-10">
+                    <input class="form-control" id="dataValidade" type="date" placeholder="Data Validade (requerido)"
+                        formControlName="dataValidade" />
+                </div>
+            </div>
+            <label class="col-md-2 control-label" for="parceiro">Parceiro</label>
+            <div class="col-md-10">
+                <select class="form-control" id="parceiro" formControlName="parceiroId">
+                    <option value="">Selecione um Parceiro</option>
+                    <option *ngFor="let parceiro of listaParceiros" value={{parceiro.id}}>
+                        {{parceiro.nome}}
+                    </option>
+                </select>
+            </div>
+            <label class="col-md-2 control-label" for="tipo">Tipo Cupom</label>
+            <div class="col-md-10">
+                <select class="form-control" id="tipo" formControlName="tipo">
+                    <option value="">Selecione um Tipo</option>
+                    <option *ngFor="let chave of chaves" value={{chave}}>
+                        {{tipos[chave]}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="container">
+                <button class="btn btn-success" id="registrar" type="submit">Salvar</button>
+                <button class="btn btn-danger" id="cancelar" (click)="cancelar()">Cancelar</button>
+            </div>
+        </div>
+    </form>
+</div>
