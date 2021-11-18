@@ -8,8 +8,8 @@ namespace LocadoraVeiculos.WebApi.ViewModels
     public class ParceiroListViewModel
     {
         public int Id { get; set; }
-
         public string Nome { get; set; }
+
     }
 
     public class ParceiroDetailsViewModel

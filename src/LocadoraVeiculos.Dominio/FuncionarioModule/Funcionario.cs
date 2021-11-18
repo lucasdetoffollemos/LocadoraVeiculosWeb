@@ -8,7 +8,6 @@ namespace LocadoraVeiculos.Dominio.FuncionarioModule
         public Funcionario()
         {
         }
-
         public string Nome { get; }
         public string Usuario { get; }
         public string Senha { get; }
