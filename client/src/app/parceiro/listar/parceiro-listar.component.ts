@@ -26,11 +26,15 @@ export class ParceiroListarComponent implements OnInit {
   }
 
   obterParceiros(): void {
+
+    console.log('cheguei')
     this.servicoParceiro.obterParceiros()
       .subscribe(parceiros => {
         this.listaParceirosTotal = parceiros;
         this.atualizarParceiros();
       });
+
+      
   }
 
   atualizarParceiros() {

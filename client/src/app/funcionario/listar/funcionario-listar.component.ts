@@ -19,7 +19,7 @@ export class FuncionarioListarComponent implements OnInit {
   pageSize = 5;
   collectionSize = 0;
 
-  constructor(private router: Router, @Inject('IHttpParceiroServiceToken') private servicoFuncionario: IHttpFuncionarioService, private servicoModal: NgbModal) { }
+  constructor(private router: Router, @Inject('IHttpFuncionarioServiceToken') private servicoFuncionario: IHttpFuncionarioService, private servicoModal: NgbModal) { }
 
   ngOnInit(): void {
     this.obterFuncionarios();
@@ -38,7 +38,7 @@ export class FuncionarioListarComponent implements OnInit {
     .map((funcionario, i) => ({ u: i + 1, ...funcionario }))
     .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
 
-  this.collectionSize = this.listaFuncionariosTotal.length;
+    this.collectionSize = this.listaFuncionariosTotal.length;
   }
 
   abrirConfirmacao(modal: any) {
