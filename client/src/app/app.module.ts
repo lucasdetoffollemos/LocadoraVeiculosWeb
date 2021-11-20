@@ -22,6 +22,7 @@ import { HttpCupomService } from './cupom/services/http-cupom.service';
 import { FuncionarioCriarComponent } from './funcionario/criar/funcionario-criar.component';
 import { FuncionarioListarComponent } from './funcionario/listar/funcionario-listar.component';
 import { HttpFuncionarioService } from './funcionario/services/http-funcionario.service';
+import { EditarFuncionarioComponent } from './funcionario/editar/editar-funcionario.component';
 //import { ToastContainerComponent } from './shared/components/toast-container/toast-container.component';
 
 @NgModule({
@@ -39,6 +40,7 @@ import { HttpFuncionarioService } from './funcionario/services/http-funcionario.
     CupomEditarComponent,
     FuncionarioCriarComponent,
     FuncionarioListarComponent,
+    EditarFuncionarioComponent,
    // ToastContainerComponent,
   ],
   imports: [

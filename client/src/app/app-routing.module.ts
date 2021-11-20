@@ -4,6 +4,7 @@ import { CupomCriarComponent } from './cupom/criar/cupom-criar.component';
 import { CupomEditarComponent } from './cupom/editar/cupom-editar.component';
 import { CupomListarComponent } from './cupom/listar/cupom-listar.component';
 import { FuncionarioCriarComponent } from './funcionario/criar/funcionario-criar.component';
+import { EditarFuncionarioComponent } from './funcionario/editar/editar-funcionario.component';
 import { FuncionarioListarComponent } from './funcionario/listar/funcionario-listar.component';
 import { HomeComponent } from './home/home.component';
 import { ParceiroCriarComponent } from './parceiro/criar/parceiro-criar.component';
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: 'cupom/criar', component: CupomCriarComponent },
   { path: 'cupom/editar/:id', component: CupomEditarComponent },
   { path: 'funcionario/criar', component: FuncionarioCriarComponent },
-  { path: 'funcionario/listar', component: FuncionarioListarComponent }
+  { path: 'funcionario/listar', component: FuncionarioListarComponent },
+  { path: 'funcionario/editar/:id', component: EditarFuncionarioComponent }
 ];
 
 @NgModule({

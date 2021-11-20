@@ -22,6 +22,7 @@ namespace LocadoraVeiculos.WebApi.ViewModels
         public string Usuario { get; set; }
         public DateTime DataAdmissao { get; set; }
         public double Salario { get; set; }
+        public string Senha { get; set; }
     }
 
     public class FuncionarioCreateViewModel

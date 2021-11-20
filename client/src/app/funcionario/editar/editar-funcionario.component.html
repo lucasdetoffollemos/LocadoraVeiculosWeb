@@ -1,8 +1,7 @@
-
 <div class="container main-container">
-    <h4>Cadastrar Funcionário</h4>
+    <h4>Editar Funcionário</h4>
     <hr />
-     <form novalidate [formGroup]="cadastroForm" (ngSubmit)='adicionarFuncionario()'> 
+     <form novalidate [formGroup]="cadastroForm" (ngSubmit)='atualizarFuncionario()'> 
     
         <div class="form-group">
             <label class="col-md-2 control-label" for="nome">Nome</label>
@@ -36,6 +35,7 @@
         <div class="form-group">
             <div class="col-md-4 col-md-offset-2">
                 <span><button class="btn btn-success" id="registrar" type="submit">Registrar</button></span>
+                
                 <span><button class="btn btn-danger" id="cancelar" (click)="cancelar()">Cancelar</button></span>
             </div>
         </div>
