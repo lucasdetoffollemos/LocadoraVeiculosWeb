@@ -23,7 +23,9 @@ import { FuncionarioCriarComponent } from './funcionario/criar/funcionario-criar
 import { FuncionarioListarComponent } from './funcionario/listar/funcionario-listar.component';
 import { HttpFuncionarioService } from './funcionario/services/http-funcionario.service';
 import { EditarFuncionarioComponent } from './funcionario/editar/editar-funcionario.component';
-//import { ToastContainerComponent } from './shared/components/toast-container/toast-container.component';
+import { ToastContainerComponent } from './shared/components/toast-container/toast-container.component';
+
+
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { EditarFuncionarioComponent } from './funcionario/editar/editar-funciona
     FuncionarioCriarComponent,
     FuncionarioListarComponent,
     EditarFuncionarioComponent,
-   // ToastContainerComponent,
+    ToastContainerComponent
+
   ],
   imports: [
     BrowserModule,
