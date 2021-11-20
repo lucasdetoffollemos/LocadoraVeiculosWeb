@@ -19,6 +19,10 @@ import { CupomCriarComponent } from './cupom/criar/cupom-criar.component';
 import { CupomEditarComponent } from './cupom/editar/cupom-editar.component';
 import { HttpParceiroService } from './parceiro/services/http-parceiro.service';
 import { HttpCupomService } from './cupom/services/http-cupom.service';
+import { FuncionarioCriarComponent } from './funcionario/criar/funcionario-criar.component';
+import { FuncionarioListarComponent } from './funcionario/listar/funcionario-listar.component';
+import { HttpFuncionarioService } from './funcionario/services/http-funcionario.service';
+//import { ToastContainerComponent } from './shared/components/toast-container/toast-container.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +37,9 @@ import { HttpCupomService } from './cupom/services/http-cupom.service';
     CupomListarComponent,
     CupomCriarComponent,
     CupomEditarComponent,
+    FuncionarioCriarComponent,
+    FuncionarioListarComponent,
+   // ToastContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +52,8 @@ import { HttpCupomService } from './cupom/services/http-cupom.service';
   ],
   providers: [
     { provide: 'IHttpParceiroServiceToken', useClass: HttpParceiroService },
-    { provide: 'IHttpCupomServiceToken', useClass: HttpCupomService }
+    { provide: 'IHttpCupomServiceToken', useClass: HttpCupomService },
+    { provide: 'IHttpFuncionarioServiceToken', useClass: HttpFuncionarioService }
   ],
   bootstrap: [AppComponent]
 })

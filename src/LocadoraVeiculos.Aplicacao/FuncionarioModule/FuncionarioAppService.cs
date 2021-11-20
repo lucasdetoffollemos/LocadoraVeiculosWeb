@@ -95,10 +95,10 @@ namespace LocadoraVeiculos.Aplicacao.FuncionarioModule
             {
                 Log.Logger.Aqui().Warning(FuncionarioNaoRegistrado + IdFuncionario_Format, funcionario.Id);
 
-                return FuncionarioRegistrado_ComSucesso;
+                return FuncionarioNaoRegistrado;
             }
 
-            return FuncionarioEditado_ComSucesso;
+            return FuncionarioRegistrado_ComSucesso;
         }
 
         public Funcionario SelecionarPorId(int id)
