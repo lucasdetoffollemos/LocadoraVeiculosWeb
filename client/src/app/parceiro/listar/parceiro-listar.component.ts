@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IHttpParceiroService } from 'src/app/shared/interfaces/IHttpParceiroService';
+import { ToastService } from 'src/app/shared/services/toast.service';
 import { ParceiroListViewModel } from 'src/app/shared/viewModels/parceiro/ParceiroListViewModel';
 
 @Component({
@@ -18,7 +19,7 @@ export class ParceiroListarComponent implements OnInit {
   pageSize = 5;
   collectionSize = 0;
 
-  constructor(private router: Router, @Inject('IHttpParceiroServiceToken') private servicoParceiro: IHttpParceiroService, private servicoModal: NgbModal) {
+  constructor(private router: Router, @Inject('IHttpParceiroServiceToken') private servicoParceiro: IHttpParceiroService, private servicoModal: NgbModal, private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -27,7 +28,7 @@ export class ParceiroListarComponent implements OnInit {
 
   obterParceiros(): void {
 
-    console.log('cheguei')
+   
     this.servicoParceiro.obterParceiros()
       .subscribe(parceiros => {
         this.listaParceirosTotal = parceiros;
@@ -49,12 +50,22 @@ export class ParceiroListarComponent implements OnInit {
     this.servicoModal.open(modal).result.then((resultado) => {
       if (resultado == 'Excluir') {
         this.servicoParceiro.excluirParceiro(this.parceiroSelecionado)
-          .subscribe(() => {
+        .subscribe(() =>{
+          this.toastService.show('Parceiro removido com sucesso', {classname: 'bg-success text-light', delay: 5000});
+
+          setTimeout(()=> {
             this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-              this.router.navigate(['parceiro/listar']);
-            });
-          });
+            this.router.navigate(['parceiro/listar']);
+          })
+        }, 5000)
+
+      },
+      erro => {
+        this.toastService.show('Erro ao remover parceiro ' + erro.error.errors["Nome"], {classname: 'bg-danger text-light', delay: 5000});
+        
       }
+      );
+    }
     }).catch(erro => erro);
   }
 }

@@ -7,6 +7,7 @@ import { IHttpParceiroService } from 'src/app/shared/interfaces/IHttpParceiroSer
 import { Cupom } from 'src/app/shared/models/Cupom';
 import { CupomType } from 'src/app/shared/models/CupomEnum';
 import { Parceiro } from 'src/app/shared/models/Parceiro';
+import { ToastService } from 'src/app/shared/services/toast.service';
 import { CupomDetailsViewModel } from 'src/app/shared/viewModels/cupom/CupomDetailsViewModel';
 import { CupomEditViewModel } from 'src/app/shared/viewModels/cupom/CupomEditViewModel';
 import { ParceiroListViewModel } from 'src/app/shared/viewModels/parceiro/ParceiroListViewModel';
@@ -28,7 +29,7 @@ export class CupomEditarComponent implements OnInit {
   constructor(private _Activatedroute: ActivatedRoute,
     @Inject('IHttpCupomServiceToken') private servicoCupom: IHttpCupomService,
     @Inject('IHttpParceiroServiceToken') private servicoParceiro: IHttpParceiroService,
-    private router: Router) { }
+    private router: Router, private toastService: ToastService) { }
 
   ngOnInit(): void {
     this.id = this._Activatedroute.snapshot.paramMap.get("id");
@@ -79,8 +80,20 @@ export class CupomEditarComponent implements OnInit {
     this.cupom.id = this.id;
 
     this.servicoCupom.editarCupom(this.cupom)
-      .subscribe(() => {
-        this.router.navigate(['cupom/listar']);
+    .subscribe(
+      cupom => {
+        this.toastService.show('Cupom ' + cupom.nome + ' editado com sucesso!',
+          { classname: 'bg-success text-light', delay: 5000 });
+        setTimeout(() => {
+          this.router.navigate(['cupom/listar']);
+        }, 5000);
+      },
+      erro => {
+        for(let nomeErro in erro.error.errors){
+          const mensagemErro = erro.error.errors[nomeErro];
+          this.toastService.show('Erro ao editar cupom: ' + mensagemErro,
+          { classname: 'bg-danger text-light', delay: 5000 });
+        }
       });
   }
 
