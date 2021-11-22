@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IHttpFuncionarioService } from 'src/app/shared/interfaces/IHttpFuncionarioService';
-import { IHttpParceiroService } from 'src/app/shared/interfaces/IHttpParceiroService';
+import { ToastService } from 'src/app/shared/services/toast.service';
 import { FuncionarioListViewModel } from 'src/app/shared/viewModels/funcionario/FuncionarioListViewModel';
 
 @Component({
@@ -19,7 +19,7 @@ export class FuncionarioListarComponent implements OnInit {
   pageSize = 5;
   collectionSize = 0;
 
-  constructor(private router: Router, @Inject('IHttpFuncionarioServiceToken') private servicoFuncionario: IHttpFuncionarioService, private servicoModal: NgbModal) { }
+  constructor(private router: Router, @Inject('IHttpFuncionarioServiceToken') private servicoFuncionario: IHttpFuncionarioService, private servicoModal: NgbModal, private toastService: ToastService) { }
 
   ngOnInit(): void {
     this.obterFuncionarios();
@@ -45,13 +45,25 @@ export class FuncionarioListarComponent implements OnInit {
     this.servicoModal.open(modal).result.then((resultado) => {
       if (resultado == 'Excluir') {
         this.servicoFuncionario.excluirFuncionario(this.funcionarioSelecionado)
-          .subscribe(() => {
-            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        .subscribe(() =>{
+            this.toastService.show('Funcionario removido com sucesso', {classname: 'bg-success text-light', delay: 5000});
+
+            setTimeout(()=> {
+              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
               this.router.navigate(['funcionario/listar']);
-            });
-          });
+            })
+          }, 5000)
+
+        },
+        erro => {
+          this.toastService.show('Erro ao remover funcionário ' + erro.error.errors["Nome"], {classname: 'bg-danger text-light', delay: 5000});
+          
+        }
+        );
       }
-    }).catch(erro => erro);
+      }).catch(erro => erro);
+
+
   }
 
   formatarData(data: Date): string {
