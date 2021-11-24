@@ -25,6 +25,11 @@ import { HttpFuncionarioService } from './funcionario/services/http-funcionario.
 import { EditarFuncionarioComponent } from './funcionario/editar/editar-funcionario.component';
 import { ToastContainerComponent } from './shared/components/toast-container/toast-container.component';
 
+import ptBr from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+import { FormatarEnumPipe } from './shared/pipes/formatar-enum.pipe';
+
+registerLocaleData(ptBr);
 
 
 @NgModule({
@@ -43,7 +48,8 @@ import { ToastContainerComponent } from './shared/components/toast-container/toa
     FuncionarioCriarComponent,
     FuncionarioListarComponent,
     EditarFuncionarioComponent,
-    ToastContainerComponent
+    ToastContainerComponent,
+    FormatarEnumPipe
 
   ],
   imports: [
@@ -58,7 +64,8 @@ import { ToastContainerComponent } from './shared/components/toast-container/toa
   providers: [
     { provide: 'IHttpParceiroServiceToken', useClass: HttpParceiroService },
     { provide: 'IHttpCupomServiceToken', useClass: HttpCupomService },
-    { provide: 'IHttpFuncionarioServiceToken', useClass: HttpFuncionarioService }
+    { provide: 'IHttpFuncionarioServiceToken', useClass: HttpFuncionarioService },
+    { provide: 'LOCALE_ID', useValue: 'pt' }
   ],
   bootstrap: [AppComponent]
 })

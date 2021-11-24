@@ -42,9 +42,6 @@ export class CupomListarComponent implements OnInit {
     this.collectionSize = this.listaCuponsTotal.length;
   }
 
-  formatarData(data: Date): string {
-    return new Date(data).toLocaleDateString();
-  }
 
   abrirConfirmacao(modal: any) {
     this.servicoModal.open(modal).result.then((resultado) => {

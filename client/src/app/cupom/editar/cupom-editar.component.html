@@ -77,7 +77,7 @@
                 <select class="form-control" id="tipo" formControlName="tipo">
                     <option value="">Selecione um Tipo</option>
                     <option *ngFor="let chave of chaves" value={{chave}}>
-                        {{tipos[chave]}}
+                        {{tipos[chave] | formatarEnum}}
                     </option>
                 </select>
                 <span

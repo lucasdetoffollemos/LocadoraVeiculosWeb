@@ -30,8 +30,8 @@
                 </td>
                 <td>{{ funcionario.id }}</td>
                 <td>{{ funcionario.nome }}</td>
-                <td>{{ formatarData(funcionario.dataAdmissao)}}</td>
-                <td>{{ funcionario.salario }}</td>
+                <td>{{ funcionario.dataAdmissao| date:'dd/MM/yyyy'}}</td>
+                <td>{{ funcionario.salario | currency: 'BRL'}}</td>
             </tr>
         </tbody>
     </table>

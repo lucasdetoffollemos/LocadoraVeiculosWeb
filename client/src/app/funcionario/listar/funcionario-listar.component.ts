@@ -66,8 +66,4 @@ export class FuncionarioListarComponent implements OnInit {
 
   }
 
-  formatarData(data: Date): string {
-    return new Date(data).toLocaleDateString();
-  }
-
 }

@@ -33,11 +33,11 @@
                 </td>
                 <td>{{ cupom.id }}</td>
                 <td>{{ cupom.nome }}</td>
-                <td>{{ cupom.valor }}</td>
-                <td>{{ cupom.valorMinimo }}</td>
-                <td>{{ formatarData(cupom.dataValidade) }}</td>
+                <td>{{ cupom.valor | currency: 'BRL'}}</td>
+                <td>{{ cupom.valorMinimo | currency: 'BRL'}}</td>
+                <td>{{ cupom.dataValidade | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ cupom.parceiroNome }}</td>
-                <td>{{ cupom.tipo }}</td>
+                <td>{{ cupom.tipo | formatarEnum}}</td>
             </tr>
         </tbody>
     </table>

@@ -5,5 +5,5 @@ export class CupomListViewModel {
     dataValidade: Date;
     valor: number;
     valorMinimo: number;
-    tipo: number;
+    tipo: string;
 }
