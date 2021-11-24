@@ -1,4 +1,5 @@
-﻿using LocadoraVeiculos.Dominio.CupomModule;
+﻿using LocadoraVeiculos.Dominio;
+using LocadoraVeiculos.Dominio.CupomModule;
 using LocadoraVeiculos.Infra.Logging;
 using Serilog;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
     public interface IParceiroAppService
     {
         List<Parceiro> SelecionarTodos();
-        string RegistrarNovoParceiro(Parceiro parceiro);
+        bool RegistrarNovoParceiro(Parceiro parceiro);
         Parceiro SelecionarPorId(int id);
         string ExcluirParceiro(int id);
 
@@ -40,10 +41,12 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
 
 
         private readonly IParceiroRepository parceiroRepository;
+        private INotificador notificador;
 
-        public ParceiroAppService(IParceiroRepository parceiroRepository)
+        public ParceiroAppService(IParceiroRepository parceiroRepository, INotificador notificador)
         {
             this.parceiroRepository = parceiroRepository;
+            this.notificador = notificador;
         }
 
         public string EditarParceiro(int id, Parceiro parceiro)
@@ -73,12 +76,32 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             return ParceiroExcluido_ComSucesso;
         }
 
-        public string RegistrarNovoParceiro(Parceiro parceiro)
+        public bool RegistrarNovoParceiro(Parceiro parceiro)
         {
-            var resultado = parceiro.Validar();
 
-            if (resultado != "ESTA_VALIDO")
-                return resultado;
+            ParceiroValidator validator = new ParceiroValidator();
+
+            var resultado = validator.Validate(parceiro);
+
+            if (resultado.IsValid == false)
+            {
+                foreach(var erro in resultado.Errors)
+                {
+                    notificador.RegistrarNotificacao(erro.ErrorMessage);
+                }
+
+                return false;
+            }
+
+            var nomeParceiroExistnte = parceiroRepository.VerificarNomeExistente(parceiro.Nome);
+
+            if (nomeParceiroExistnte)
+            {
+                notificador.RegistrarNotificacao($"O nome {parceiro.Nome} já está registrado em nossa base.");
+
+                return false;
+            }
+                
 
             var parceiroInserido = parceiroRepository.Inserir(parceiro);
 
@@ -86,10 +109,12 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             {
                 Log.Logger.Aqui().Warning(ParceiroNaoRegistrado + IdParceiroFormat, parceiro.Id);
 
-                return ParceiroNaoRegistrado;
+                notificador.RegistrarNotificacao(ParceiroNaoRegistrado);
+
+                return false;
             }
 
-            return ParceiroRegistrado_ComSucesso;
+            return true;
 
         }
 

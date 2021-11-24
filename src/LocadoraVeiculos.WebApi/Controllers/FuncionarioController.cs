@@ -57,6 +57,14 @@ namespace LocadoraVeiculos.WebApi.Controllers
         [HttpPost]
         public ActionResult<FuncionarioCreateViewModel> Create(FuncionarioCreateViewModel funcionarioVm)
         {
+            if(ModelState.IsValid == false)
+            {
+                var erros = ModelState.Values.SelectMany(x => x.Errors);
+
+                return BadRequest(erros);
+            }
+            
+            
             Funcionario funcionario = mapper.Map<Funcionario>(funcionarioVm);
 
             var resultado = funcionarioAppService.RegistrarNovoFuncionario(funcionario);

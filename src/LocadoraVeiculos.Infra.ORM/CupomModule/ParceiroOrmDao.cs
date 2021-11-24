@@ -25,5 +25,10 @@ namespace LocadoraVeiculos.Infra.ORM.CupomModule
             return db.Parceiros
                 .FirstOrDefault(x => x.Id == id);
         }
+
+        public bool VerificarNomeExistente(string nome)
+        {
+            return db.Parceiros.Count(x => x.Nome == nome) > 0;
+        }
     }
 }

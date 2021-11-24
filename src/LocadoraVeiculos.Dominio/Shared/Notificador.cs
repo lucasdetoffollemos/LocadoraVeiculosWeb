@@ -1,32 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace LocadoraVeiculos.Dominio.Shared
+namespace LocadoraVeiculos.Dominio
 {
     public interface INotificador
     {
-        void Handle(Notificacao notificacao);
+        void RegistrarNotificacao(string notificacao);
 
-        List<Notificacao> ObterNotificacoes();
+        List<string> ObterNotificacoes();
 
         bool TemNotificacao();
     }
 
     public class Notificador : INotificador
     {
-        private List<Notificacao> _notificacoes;
+        private List<string> _notificacoes;
 
         public Notificador()
         {
-            _notificacoes = new List<Notificacao>();
+            _notificacoes = new List<string>();
         }
 
-        public void Handle(Notificacao notificacao)
+        public void RegistrarNotificacao(string notificacao)
         {
             _notificacoes.Add(notificacao);
         }
 
-        public List<Notificacao> ObterNotificacoes()
+        public List<string> ObterNotificacoes()
         {
             return _notificacoes;
         }

@@ -2,6 +2,7 @@
 using AutoMapper;
 using LocadoraVeiculos.Aplicacao.CupomModule;
 using LocadoraVeiculos.Aplicacao.FuncionarioModule;
+using LocadoraVeiculos.Dominio;
 using LocadoraVeiculos.Dominio.CupomModule;
 using LocadoraVeiculos.Dominio.FuncionarioModule;
 using LocadoraVeiculos.Infra.ORM;
@@ -36,6 +37,8 @@ namespace LocadoraVeiculos.WebApi.Config.AutoFacConfig
 
 
             builder.RegisterType<Mapper>().As<IMapper>();
+
+            builder.RegisterType<Notificador>().As<INotificador>().InstancePerLifetimeScope();
         }
       
 

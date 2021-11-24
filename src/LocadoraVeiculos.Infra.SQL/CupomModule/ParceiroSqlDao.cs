@@ -35,6 +35,11 @@ namespace LocadoraVeiculos.Infra.SQL.CupomModule
             throw new NotImplementedException();
         }
 
+        public bool VerificarNomeExistente(string nome)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override Parceiro Converter(IDataReader reader)
         {
             throw new NotImplementedException();
