@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IHttpFuncionarioService } from 'src/app/shared/interfaces/IHttpFuncionarioService';
 import { ToastService } from 'src/app/shared/services/toast.service';
@@ -18,11 +18,11 @@ export class FuncionarioCriarComponent implements OnInit {
 
   ngOnInit(): void {
     this.cadastroForm = new FormGroup({
-      nome: new FormControl(''),
-      dataAdmissao: new FormControl(''),
-      salario: new FormControl(''),
-      usuario: new FormControl(''),
-      senha: new FormControl('')
+      nome: new FormControl('', Validators.required),
+      dataAdmissao: new FormControl('', Validators.required),
+      salario: new FormControl('', Validators.compose([Validators.required, Validators.min(1)])),
+      usuario: new FormControl('', Validators.required),
+      senha: new FormControl('', Validators.required)
     });
   }
 

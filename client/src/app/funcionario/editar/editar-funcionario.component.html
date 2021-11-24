@@ -8,26 +8,60 @@
             <div class="col-md-10">
                 <input class="form-control" id="nome" type="text" placeholder="Nome (requerido)"
                     formControlName="nome" />
+                    <span
+                    *ngIf="cadastroForm.controls.nome.errors && (cadastroForm.controls.nome.dirty || cadastroForm.controls.nome.touched)"
+                    class="alert">
+                    Campo Nome é obrigatório
+                </span>
             </div>
             <label class="col-md-2 control-label" for="dataAdmissao">Data Admissão</label>
             <div class="col-md-10">
                 <input class="form-control" id="dataAdmissao" type="date" 
                     formControlName="dataAdmissao" />
+                    <span
+                    *ngIf="cadastroForm.controls.dataAdmissao.errors && (cadastroForm.controls.dataAdmissao.dirty || cadastroForm.controls.dataAdmissao.touched)"
+                    class="alert">
+                    Campo Data Admissão é obrigatório
+                    </span>
             </div>
             <label class="col-md-2 control-label" for="salario">Salario</label>
             <div class="col-md-10">
                 <input class="form-control" id="salario" type="number" 
                     formControlName="salario" />
+
+                    <span
+                    *ngIf="cadastroForm.controls.salario.errors?.required && (cadastroForm.controls.salario.dirty || cadastroForm.controls.salario.touched)"
+                    class="alert">
+                    Campo Salario é obrigatório
+                    </span>
+
+                    <span
+                    *ngIf="cadastroForm.controls.salario.errors?.min && (cadastroForm.controls.salario.dirty || cadastroForm.controls.salario.touched)"
+                    class="alert">
+                    Campo Salario necessita ser maior ou igual a 1
+                    </span>
             </div>
             <label class="col-md-2 control-label" for="usuario">Usuario</label>
             <div class="col-md-10">
                 <input class="form-control" id="usuario" type="text" placeholder="Usuario (requerido)"
                     formControlName="usuario" />
+
+                    <span
+                    *ngIf="cadastroForm.controls.usuario.errors && (cadastroForm.controls.usuario.dirty || cadastroForm.controls.usuario.touched)"
+                    class="alert">
+                    Campo Usuario é obrigatório
+                    </span>
             </div>
             <label class="col-md-2 control-label" for="senha">Senha</label>
             <div class="col-md-10">
                 <input class="form-control" id="senha" type="password" placeholder="Senha (requerido)"
                     formControlName="senha" />
+
+                    <span
+                    *ngIf="cadastroForm.controls.senha.errors && (cadastroForm.controls.senha.dirty || cadastroForm.controls.senha.touched)"
+                    class="alert">
+                    Campo Senha é obrigatório
+                    </span>
             </div>
             
         </div>

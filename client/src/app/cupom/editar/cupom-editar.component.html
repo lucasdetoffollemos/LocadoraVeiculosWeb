@@ -7,22 +7,55 @@
             <div class="col-md-10">
                 <input class="form-control" id="nome" type="text" placeholder="Nome (requerido)"
                     formControlName="nome" />
+                    <span
+                    *ngIf="cadastroForm.controls.nome.errors && (cadastroForm.controls.nome.dirty || cadastroForm.controls.nome.touched)"
+                    class="alert">
+                    Campo Nome é obrigatório
+                </span>
             </div>
             <label class="col-md-2 control-label" for="valor">Valor</label>
             <div class="col-md-10">
                 <input class="form-control" id="valor" type="text" placeholder="Valor (requerido)"
                     formControlName="valor" />
+
+                    <span
+                    *ngIf="cadastroForm.controls.valor.errors?.required && (cadastroForm.controls.valor.dirty || cadastroForm.controls.valor.touched)"
+                    class="alert">
+                    Campo Valor é obrigatório
+                </span>
+                <span
+                    *ngIf="cadastroForm.controls.valor.errors?.min && (cadastroForm.controls.valor.dirty || cadastroForm.controls.valor.touched)"
+                    class="alert">
+                    Campo Valor necessita ser maior ou igual a 1
+                </span>
             </div>
             <label class="col-md-2 control-label" for="valorMinimo">Valor Mínimo</label>
             <div class="col-md-10">
                 <input class="form-control" id="valorMinimo" type="text" placeholder="Valor Mínimo (requerido)"
                     formControlName="valorMinimo" />
+
+                    <span
+                    *ngIf="cadastroForm.controls.valorMinimo.errors?.required && (cadastroForm.controls.valorMinimo.dirty || cadastroForm.controls.valorMinimo.touched)"
+                    class="alert">
+                    Campo Valor Mínimo é obrigatório
+                </span>
+                <span
+                    *ngIf="cadastroForm.controls.valorMinimo.errors?.valorMenor && (cadastroForm.controls.valorMinimo.dirty || cadastroForm.controls.valorMinimo.touched)"
+                    class="alert">
+                    Campo Valor não pode ser menor que o Valor Mínimo
+                </span>
             </div>
             <label class="col-md-2 control-label" for="dataValidade">Data Validade</label>
             <div>
                 <div class="col-md-10">
                     <input class="form-control" id="dataValidade" type="date" placeholder="Data Validade (requerido)"
                         formControlName="dataValidade" />
+
+                        <span
+                        *ngIf="cadastroForm.controls.dataValidade.errors && (cadastroForm.controls.dataValidade.dirty || cadastroForm.controls.dataValidade.touched)"
+                        class="alert">
+                        Campo Data Validade é obrigatório
+                    </span>
                 </div>
             </div>
             <label class="col-md-2 control-label" for="parceiro">Parceiro</label>
@@ -33,6 +66,11 @@
                         {{parceiro.nome}}
                     </option>
                 </select>
+                <span
+                    *ngIf="cadastroForm.controls.parceiroId.errors && (cadastroForm.controls.parceiroId.dirty || cadastroForm.controls.parceiroId.touched)"
+                    class="alert">
+                    Campo Parceiro é obrigatório
+                </span>
             </div>
             <label class="col-md-2 control-label" for="tipo">Tipo Cupom</label>
             <div class="col-md-10">
@@ -42,6 +80,11 @@
                         {{tipos[chave]}}
                     </option>
                 </select>
+                <span
+                    *ngIf="cadastroForm.controls.tipo.errors && (cadastroForm.controls.tipo.dirty || cadastroForm.controls.tipo.touched)"
+                    class="alert">
+                    O tipo de cupom é obrigatório
+                </span>
             </div>
         </div>
         <br>

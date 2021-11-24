@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IHttpFuncionarioService } from 'src/app/shared/interfaces/IHttpFuncionarioService';
 import { ToastService } from 'src/app/shared/services/toast.service';
@@ -26,7 +26,7 @@ export class EditarFuncionarioComponent implements OnInit {
       id: new FormControl(''),
       nome: new FormControl(''),
       dataAdmissao: new FormControl(''),
-      salario:new FormControl(''),
+      salario: new FormControl(''),
       usuario: new FormControl(''),
       senha: new FormControl('')
     });
@@ -69,11 +69,11 @@ export class EditarFuncionarioComponent implements OnInit {
 
     this.cadastroForm = new FormGroup({
       id: new FormControl(funcionario.id),
-      nome: new FormControl(funcionario.nome),
-      dataAdmissao: new FormControl(funcionario.dataAdmissao.toLocaleString().substring(0, 10)),
-      salario:new FormControl(funcionario.salario),
-      usuario: new FormControl(funcionario.usuario),
-      senha: new FormControl(funcionario.senha)
+      nome: new FormControl(funcionario.nome, Validators.required),
+      dataAdmissao: new FormControl(funcionario.dataAdmissao.toLocaleString().substring(0, 10), Validators.required),
+      salario:new FormControl(funcionario.salario, Validators.compose([Validators.required, Validators.min(1)]) ),
+      usuario: new FormControl(funcionario.usuario, Validators.required),
+      senha: new FormControl(funcionario.senha, Validators.required)
     });
   }
 

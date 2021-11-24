@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IHttpParceiroService } from 'src/app/shared/interfaces/IHttpParceiroService';
 import { ToastService } from 'src/app/shared/services/toast.service';
@@ -69,7 +69,7 @@ export class ParceiroEditarComponent implements OnInit {
 
     this.cadastroForm = new FormGroup({
       id: new FormControl(parceiro.id),
-      nome: new FormControl(parceiro.nome),
+      nome: new FormControl(parceiro.nome, Validators.required),
     });
 
     this.cupons = parceiro.cupons;

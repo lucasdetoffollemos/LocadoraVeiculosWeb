@@ -97,3 +97,9 @@
   .dropdown-toggle{
     width: 200px;
   }
+
+  .alert{
+    color: red;
+    font-style: italic;
+    font-size: small;
+  }

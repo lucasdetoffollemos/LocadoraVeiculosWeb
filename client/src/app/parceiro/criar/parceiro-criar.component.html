@@ -7,6 +7,11 @@
             <div class="col-md-10">
                 <input class="form-control" id="nome" type="text" placeholder="Nome (requerido)"
                     formControlName="nome" />
+                    <span
+                    *ngIf="cadastroForm.controls.nome.errors && (cadastroForm.controls.nome.dirty || cadastroForm.controls.nome.touched)"
+                    class="alert">
+                    Campo Nome é obrigatório
+                </span>
             </div>
         </div>
         <br>

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { IHttpCupomService } from 'src/app/shared/interfaces/IHttpCupomService';
@@ -8,6 +8,7 @@ import { Cupom } from 'src/app/shared/models/Cupom';
 import { CupomType } from 'src/app/shared/models/CupomEnum';
 import { Parceiro } from 'src/app/shared/models/Parceiro';
 import { ToastService } from 'src/app/shared/services/toast.service';
+import { valorMinimo } from 'src/app/shared/validators/valores-cupom.directive';
 import { CupomDetailsViewModel } from 'src/app/shared/viewModels/cupom/CupomDetailsViewModel';
 import { CupomEditViewModel } from 'src/app/shared/viewModels/cupom/CupomEditViewModel';
 import { ParceiroListViewModel } from 'src/app/shared/viewModels/parceiro/ParceiroListViewModel';
@@ -66,12 +67,12 @@ export class CupomEditarComponent implements OnInit {
   carregarFormulario(cupom: CupomDetailsViewModel) {
 
     this.cadastroForm = new FormGroup({
-      nome: new FormControl(cupom.nome),
-      valor: new FormControl(cupom.valor),
-      valorMinimo: new FormControl(cupom.valorMinimo),
-      dataValidade: new FormControl(cupom.dataValidade.toLocaleString().substring(0, 10)),
-      parceiroId: new FormControl(cupom.parceiroId),
-      tipo: new FormControl(cupom.tipo)
+      nome: new FormControl(cupom.nome, Validators.required),
+      valor: new FormControl(cupom.valor, Validators.compose([Validators.required, Validators.min(1)])),
+      valorMinimo: new FormControl(cupom.valorMinimo, Validators.compose([Validators.required, valorMinimo])),
+      dataValidade: new FormControl(cupom.dataValidade.toLocaleString().substring(0, 10), Validators.required),
+      parceiroId: new FormControl(cupom.parceiroId, Validators.required),
+      tipo: new FormControl(cupom.tipo, Validators.required)
     });
   }
 

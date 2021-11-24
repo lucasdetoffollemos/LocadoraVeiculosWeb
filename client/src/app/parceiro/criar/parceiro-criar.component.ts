@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IHttpParceiroService } from 'src/app/shared/interfaces/IHttpParceiroService';
 import { ToastService } from 'src/app/shared/services/toast.service';
@@ -18,7 +18,7 @@ export class ParceiroCriarComponent implements OnInit {
 
   ngOnInit(): void {
     this.cadastroForm = new FormGroup({
-      nome: new FormControl('')
+      nome: new FormControl('', Validators.required)
     });
   }
 
