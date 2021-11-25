@@ -67,15 +67,16 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             }
 
 
-            var nomeParceiroExistnte = parceiroRepository.VerificarNomeExistente(parceiro.Nome);
+            //var nomeParceiroExistnte = parceiroRepository.VerificarNomeExistente(parceiro.Nome);
 
-            if (nomeParceiroExistnte)
-            {
-                notificador.RegistrarNotificacao($"O nome {parceiro.Nome} já está registrado em nossa base.");
+            //if (nomeParceiroExistnte)
+            //{
+                   //Fazer uma verificação para o nome poder ser igual quando o id é o mesmo passado.
+            //    notificador.RegistrarNotificacao($"O nome {parceiro.Nome} já está registrado em nossa base.");
 
-                return false;
-            }
-            
+            //    return false;
+            //}
+
 
 
             var parceiroEditado = parceiroRepository.Editar(id, parceiro);
@@ -84,7 +85,7 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             {
                 Log.Logger.Aqui().Warning(ParceiroNaoEditado + IdParceiroFormat, id);
 
-                notificador.RegistrarNotificacao(ParceiroNaoRegistrado);
+                notificador.RegistrarNotificacao(ParceiroNaoEditado);
 
                 return false;
             }

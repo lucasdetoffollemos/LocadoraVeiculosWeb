@@ -9,7 +9,6 @@ namespace LocadoraVeiculos.Dominio.TaxaModule
         public string Nome { get; }
         public decimal Valor { get; }
         public TipoTaxaEnum TipoTaxa { get; }
-
         public EstadoTaxaLocacaoEnum EstadoTaxaLocacao { get; set; }
         public List<Locacao> Locacoes { get; set; }
 
