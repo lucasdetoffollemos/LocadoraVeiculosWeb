@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using LocadoraVeiculos.Aplicacao.CupomModule;
+using LocadoraVeiculos.Aplicacao.TaxaModule;
 using LocadoraVeiculos.Dominio;
-using LocadoraVeiculos.Dominio.CupomModule;
-using LocadoraVeiculos.Infra.ORM;
-using LocadoraVeiculos.Infra.ORM.CupomModule;
+using LocadoraVeiculos.Dominio.TaxaModule;
 using LocadoraVeiculos.WebApi.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
@@ -13,57 +10,60 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 namespace LocadoraVeiculos.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ParceiroController : ControllerBase
+    public class TaxaController : ControllerBase
     {
-        private readonly IParceiroAppService parceiroAppService;
-        private readonly IParceiroRepository parceiroRepository;
+        private readonly ITaxaAppService taxaAppService;
+        private readonly ITaxaRepository taxaRepository;
         private readonly IMapper mapper;
         private readonly INotificador notificador;
-        public ParceiroController(IMapper mapper, IParceiroRepository parceiroRepository, IParceiroAppService parceiroAppService, INotificador notificador)
+
+        public TaxaController(ITaxaAppService taxaAppService, ITaxaRepository taxaRepository, IMapper mapper, INotificador notificador)
         {
-            this.parceiroAppService = parceiroAppService;
-
+            this.taxaAppService = taxaAppService;
+            this.taxaRepository = taxaRepository;
             this.mapper = mapper;
-
-            this.parceiroRepository = parceiroRepository;
-
             this.notificador = notificador;
-
-           
         }
 
-        [HttpGet]
-        public List<ParceiroListViewModel> GetAll()
-        {
-            var parceiros = parceiroRepository.SelecionarTodos();
 
-            var viewModel = mapper.Map<List<ParceiroListViewModel>>(parceiros);
+        // GET: api/<TaxaController>
+        [HttpGet]
+        public List<TaxaListViewModel> GetAll()
+        {
+            var taxas = taxaRepository.SelecionarTodos();
+
+            var viewModel = mapper.Map<List<TaxaListViewModel>>(taxas);
 
             return viewModel;
+
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ParceiroDetailsViewModel> Get(int id)
+        public ActionResult<TaxaDetailsViewModel> Get(int id)
         {
-            var parceiro = parceiroRepository.SelecionarPorId(id);
 
-            if (parceiro == null)
+            var taxaSelecionada = taxaRepository.SelecionarPorId(id);
+
+            if (taxaSelecionada == null)
                 return NotFound(id);
 
-            var viewModel = mapper.Map<ParceiroDetailsViewModel>(parceiro);
+            var viewModel = mapper.Map<TaxaDetailsViewModel>(taxaSelecionada);
+
 
             return Ok(viewModel);
         }
 
+        // POST api/<TaxaController>
         [HttpPost]
-        public ActionResult<ParceiroCreateViewModel> Create(ParceiroCreateViewModel viewModel)
+        public ActionResult<TaxaCreateViewModel> Create(TaxaCreateViewModel viewModel)
         {
-
-            if (ModelState.IsValid == false)
+            if(ModelState.IsValid == false)
             {
                 IEnumerable<ModelError> erros = ModelState.Values.SelectMany(x => x.Errors);
 
@@ -80,9 +80,9 @@ namespace LocadoraVeiculos.WebApi.Controllers
                 });
             }
 
-            Parceiro parceiro = mapper.Map<Parceiro>(viewModel);
+            Taxa taxa = mapper.Map<Taxa>(viewModel);
 
-            bool registroRealizado = parceiroAppService.RegistrarNovoParceiro(parceiro);
+            bool registroRealizado = taxaAppService.RegistrarNovaTaxa(taxa);
 
             if (registroRealizado == false)
             {
@@ -94,11 +94,16 @@ namespace LocadoraVeiculos.WebApi.Controllers
             }
 
             return CreatedAtAction(nameof(Create), viewModel);
+
+
+
         }
 
+        // PUT api/<TaxaController>/5
         [HttpPut("{id}")]
-        public ActionResult<ParceiroEditViewModel> Edit(int id, ParceiroEditViewModel viewModel)
+        public ActionResult<TaxaEditViewModel> Edit(int id,  TaxaEditViewModel viewModel)
         {
+
             if (ModelState.IsValid == false)
             {
                 IEnumerable<ModelError> erros = ModelState.Values.SelectMany(x => x.Errors);
@@ -116,9 +121,9 @@ namespace LocadoraVeiculos.WebApi.Controllers
                 });
             }
 
-            Parceiro parceiro = mapper.Map<Parceiro>(viewModel);
+            Taxa taxa = mapper.Map<Taxa>(viewModel);
 
-            bool edicaoRealizada = parceiroAppService.EditarParceiro(id, parceiro);
+            bool edicaoRealizada = taxaAppService.EditarTaxa(id, taxa);
 
             if (edicaoRealizada == false)
             {
@@ -130,25 +135,10 @@ namespace LocadoraVeiculos.WebApi.Controllers
             }
 
             return Ok(viewModel);
-
-
-
-            //if (id != viewModel.Id)
-            //    return BadRequest();
-
-            //Parceiro parceiro = mapper.Map<Parceiro>(viewModel);
-
-            //var resultado = parceiroAppService.EditarParceiro(id, parceiro);
-
-            //if (resultado == "Parceiro editado com sucesso")
-            //{
-            //    return Ok(viewModel);
-            //}
-
-            //return NoContent();
         }
 
-        [HttpDelete("{id:int}")]
+        // DELETE api/<TaxaController>/5
+        [HttpDelete("{id}")]
         public ActionResult<ParceiroCreateViewModel> Delete(int id)
         {
             if (ModelState.IsValid == false)
@@ -168,9 +158,9 @@ namespace LocadoraVeiculos.WebApi.Controllers
                 });
             }
 
-            var delecaoRealizada = parceiroAppService.ExcluirParceiro(id);
+            var delecaoRealizada = taxaAppService.ExcluirTaxa(id);
 
-            if(delecaoRealizada == false)
+            if (delecaoRealizada == false)
             {
                 return BadRequest(new
                 {
@@ -181,19 +171,6 @@ namespace LocadoraVeiculos.WebApi.Controllers
 
             return Ok(id);
 
-            //if (id <= 0)
-            //    return BadRequest("Id não pode ser menor que 0");
-
-            //var resultado = parceiroAppService.ExcluirParceiro(id);
-
-            //if (resultado == "Parceiro excluído com sucesso")
-            //{
-            //    return Ok(id);
-            //}
-
-            //return NoContent();
         }
     }
-
-
 }

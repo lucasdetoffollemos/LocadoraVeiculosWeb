@@ -8,7 +8,7 @@ namespace LocadoraVeiculos.WebApi.ViewModels
 {
   
 
-    public class TaxasListViewModel
+    public class TaxaListViewModel
     {
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -17,7 +17,7 @@ namespace LocadoraVeiculos.WebApi.ViewModels
 
     }
 
-    public class TaxasDetailsViewModel
+    public class TaxaDetailsViewModel
     {
         public string Nome { get; set; }
         public decimal Valor { get; set; }
@@ -26,7 +26,7 @@ namespace LocadoraVeiculos.WebApi.ViewModels
         //public List<Locacao> Locacoes { get; set; }
     }
 
-    public class TaxasCreateViewModel
+    public class TaxaCreateViewModel
     {
         [Required(ErrorMessage = "Campo nome é obrigatório.")]
         public string Nome { get; set; }
@@ -38,7 +38,7 @@ namespace LocadoraVeiculos.WebApi.ViewModels
         public int TipoTaxa { get; set; }
     }
 
-    public class TaxasEditViewModel
+    public class TaxaEditViewModel
     {
         public int Id { get; set; }
 
