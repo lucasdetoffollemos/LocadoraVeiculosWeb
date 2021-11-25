@@ -1,0 +1,62 @@
+
+
+<div class="container main-container">
+    <h4>Cadastrar Taxa</h4>
+    <hr />
+     <form novalidate [formGroup]="cadastroForm" (ngSubmit)='adicionarTaxa()'> 
+    
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="nome">Nome</label>
+            <div class="col-md-10">
+                <input class="form-control" id="nome" type="text" placeholder="Nome (requerido)"
+                    formControlName="nome" />
+                    <span
+                    *ngIf="cadastroForm.controls.nome.errors && (cadastroForm.controls.nome.dirty || cadastroForm.controls.nome.touched)"
+                    class="alert">
+                    Campo Nome é obrigatório
+                </span>
+            </div>
+            <label class="col-md-2 control-label" for="valor">Valor</label>
+            <div class="col-md-10">
+                <input class="form-control" id="valor" type="number" 
+                    formControlName="valor" />
+                    <span
+                    *ngIf="cadastroForm.controls.valor.errors?.required && (cadastroForm.controls.valor.dirty || cadastroForm.controls.valor.touched)"
+                    class="alert">
+                    Campo Valor é obrigatório
+                    </span>
+
+                    <span
+                    *ngIf="cadastroForm.controls.valor.errors?.min && (cadastroForm.controls.valor.dirty || cadastroForm.controls.valor.touched)"
+                    class="alert">
+                    Campo Valor necessita ser maior ou igual a 1
+                    </span>
+            </div>
+            <label class="col-md-2 control-label" for="tipoTaxa">Tipo Taxa</label>
+            <div class="col-md-10">
+                <select class="form-control" id="tipoTaxa" formControlName="tipoTaxa">
+                    <option value="">Selecione um Tipo de Taxa</option>
+                    <option *ngFor="let chave of chaves" value={{chave}}>
+                        {{tiposTaxa[chave] | formatarEnum}}
+                    </option>
+                </select>
+
+                <span
+                    *ngIf="cadastroForm.controls.tipoTaxa.errors && (cadastroForm.controls.tipoTaxa.dirty || cadastroForm.controls.tipoTaxa.touched)"
+                    class="alert">
+                    O tipo de taxa é obrigatório
+                </span>
+            </div>
+            
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="col-md-4 col-md-offset-2">
+                <span><button class="btn btn-success" id="registrar" type="submit">Registrar</button></span>
+                <span><button class="btn btn-danger" id="cancelar" (click)="cancelar()">Cancelar</button></span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts> 

@@ -10,6 +10,9 @@ import { HomeComponent } from './home/home.component';
 import { ParceiroCriarComponent } from './parceiro/criar/parceiro-criar.component';
 import { ParceiroEditarComponent } from './parceiro/editar/parceiro-editar.component';
 import { ParceiroListarComponent } from './parceiro/listar/parceiro-listar.component';
+import { TaxaCriarComponent } from './taxa/criar/taxa-criar.component';
+import { TaxaEditarComponent } from './taxa/editar/taxa-editar.component';
+import { TaxaListarComponent } from './taxa/listar/taxa-listar.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -22,7 +25,10 @@ const routes: Routes = [
   { path: 'cupom/editar/:id', component: CupomEditarComponent },
   { path: 'funcionario/criar', component: FuncionarioCriarComponent },
   { path: 'funcionario/listar', component: FuncionarioListarComponent },
-  { path: 'funcionario/editar/:id', component: EditarFuncionarioComponent }
+  { path: 'funcionario/editar/:id', component: EditarFuncionarioComponent },
+  { path: 'taxa/criar', component: TaxaCriarComponent },
+  { path: 'taxa/listar', component: TaxaListarComponent },
+  { path: 'taxa/editar/:id', component: TaxaEditarComponent }
 ];
 
 @NgModule({

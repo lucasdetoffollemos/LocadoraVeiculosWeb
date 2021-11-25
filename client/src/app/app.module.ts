@@ -28,6 +28,10 @@ import { ToastContainerComponent } from './shared/components/toast-container/toa
 import ptBr from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
 import { FormatarEnumPipe } from './shared/pipes/formatar-enum.pipe';
+import { TaxaCriarComponent } from './taxa/criar/taxa-criar.component';
+import { TaxaListarComponent } from './taxa/listar/taxa-listar.component';
+import { TaxaEditarComponent } from './taxa/editar/taxa-editar.component';
+import { HttpTaxaService } from './taxa/services/http-taxa.service';
 
 registerLocaleData(ptBr);
 
@@ -49,7 +53,10 @@ registerLocaleData(ptBr);
     FuncionarioListarComponent,
     EditarFuncionarioComponent,
     ToastContainerComponent,
-    FormatarEnumPipe
+    FormatarEnumPipe,
+    TaxaCriarComponent,
+    TaxaListarComponent,
+    TaxaEditarComponent
 
   ],
   imports: [
@@ -65,6 +72,7 @@ registerLocaleData(ptBr);
     { provide: 'IHttpParceiroServiceToken', useClass: HttpParceiroService },
     { provide: 'IHttpCupomServiceToken', useClass: HttpCupomService },
     { provide: 'IHttpFuncionarioServiceToken', useClass: HttpFuncionarioService },
+    { provide: 'IHttpTaxaServiceToken', useClass: HttpTaxaService },
     { provide: 'LOCALE_ID', useValue: 'pt' }
   ],
   bootstrap: [AppComponent]
