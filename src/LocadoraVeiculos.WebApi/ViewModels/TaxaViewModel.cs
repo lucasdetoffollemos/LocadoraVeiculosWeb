@@ -13,7 +13,7 @@ namespace LocadoraVeiculos.WebApi.ViewModels
         public int Id { get; set; }
         public string Nome { get; set; }
         public decimal Valor { get; set; }
-        public int TipoTaxa { get; set; }
+        public string TipoTaxa { get; set; }
 
     }
 
