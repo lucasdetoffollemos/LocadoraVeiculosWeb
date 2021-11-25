@@ -37,13 +37,9 @@ namespace LocadoraVeiculos.WebApi.ViewModels
         public string Senha { get; set; }
 
         [Required(ErrorMessage = "O campo data admissão é obrigatório.")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DataAdmissao { get; set; }
 
         [Required(ErrorMessage = "O campo salario é obrigatório.")]
-        [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage ="Formato inválido")]
-        [Range(0, 9999999999999999.99, ErrorMessage = "Fora do range") ]
-        [DataType(DataType.Currency, ErrorMessage = "Formato inválido")]
         public double Salario { get; set; }
     }
 

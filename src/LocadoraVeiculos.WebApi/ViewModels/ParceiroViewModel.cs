@@ -15,7 +15,6 @@ namespace LocadoraVeiculos.WebApi.ViewModels
 
     public class ParceiroDetailsViewModel
     {
-
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Campo nome é obrigatório.")]

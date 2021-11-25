@@ -11,9 +11,9 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
         List<Parceiro> SelecionarTodos();
         bool RegistrarNovoParceiro(Parceiro parceiro);
         Parceiro SelecionarPorId(int id);
-        string ExcluirParceiro(int id);
+        bool ExcluirParceiro(int id);
 
-        string EditarParceiro(int id, Parceiro parceiro);
+        bool EditarParceiro(int id, Parceiro parceiro);
     }
 
     public class ParceiroAppService : IParceiroAppService
@@ -49,31 +49,84 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             this.notificador = notificador;
         }
 
-        public string EditarParceiro(int id, Parceiro parceiro)
+        public bool EditarParceiro(int id, Parceiro parceiro)
         {
-            var cupomAlterado = parceiroRepository.Editar(id, parceiro);
 
-            if (cupomAlterado == false)
+            ParceiroValidator validator = new ParceiroValidator();
+
+            var resultado = validator.Validate(parceiro);
+
+            if (resultado.IsValid == false)
             {
-                Log.Logger.Aqui().Information(ParceiroNaoEditado + IdParceiroFormat, id);
+                foreach (var erro in resultado.Errors)
+                {
+                    notificador.RegistrarNotificacao(erro.ErrorMessage);
+                }
 
-                return ParceiroNaoEditado;
+                return false;
             }
 
-            return ParceiroEditado_ComSucesso;
+
+            var nomeParceiroExistnte = parceiroRepository.VerificarNomeExistente(parceiro.Nome);
+
+            if (nomeParceiroExistnte)
+            {
+                notificador.RegistrarNotificacao($"O nome {parceiro.Nome} já está registrado em nossa base.");
+
+                return false;
+            }
+            
+
+
+            var parceiroEditado = parceiroRepository.Editar(id, parceiro);
+
+            if (parceiroEditado == false)
+            {
+                Log.Logger.Aqui().Warning(ParceiroNaoEditado + IdParceiroFormat, id);
+
+                notificador.RegistrarNotificacao(ParceiroNaoRegistrado);
+
+                return false;
+            }
+
+            return true;
+
+            //var cupomAlterado = parceiroRepository.Editar(id, parceiro);
+
+            //if (cupomAlterado == false)
+            //{
+            //    Log.Logger.Aqui().Information(ParceiroNaoEditado + IdParceiroFormat, id);
+
+            //    return ParceiroNaoEditado;
+            //}
+
+            //return ParceiroEditado_ComSucesso;
         }
-        public string ExcluirParceiro(int id)
+        public bool ExcluirParceiro(int id)
         {
+
             var parceiroExcluido = parceiroRepository.Excluir(id);
 
             if (parceiroExcluido == false)
             {
-                Log.Logger.Aqui().Information(ParceiroNaoExcluido + IdParceiroFormat, id);
+                Log.Logger.Aqui().Warning(ParceiroNaoExcluido + IdParceiroFormat, id);
 
-                return ParceiroNaoExcluido;
+                notificador.RegistrarNotificacao(ParceiroNaoRegistrado);
+
+                return false;
             }
 
-            return ParceiroExcluido_ComSucesso;
+            return true;
+            //var parceiroExcluido = parceiroRepository.Excluir(id);
+
+            //if (parceiroExcluido == false)
+            //{
+            //    Log.Logger.Aqui().Information(ParceiroNaoExcluido + IdParceiroFormat, id);
+
+            //    return ParceiroNaoExcluido;
+            //}
+
+            //return ParceiroExcluido_ComSucesso;
         }
 
         public bool RegistrarNovoParceiro(Parceiro parceiro)

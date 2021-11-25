@@ -99,35 +99,99 @@ namespace LocadoraVeiculos.WebApi.Controllers
         [HttpPut("{id}")]
         public ActionResult<ParceiroEditViewModel> Edit(int id, ParceiroEditViewModel viewModel)
         {
-            if (id != viewModel.Id)
-                return BadRequest();
+            if (ModelState.IsValid == false)
+            {
+                IEnumerable<ModelError> erros = ModelState.Values.SelectMany(x => x.Errors);
+
+                foreach (var erro in erros)
+                {
+                    var erroMsg = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
+                    notificador.RegistrarNotificacao(erroMsg);
+                }
+
+                return BadRequest(new
+                {
+                    success = false,
+                    errors = notificador.ObterNotificacoes()
+                });
+            }
 
             Parceiro parceiro = mapper.Map<Parceiro>(viewModel);
 
-            var resultado = parceiroAppService.EditarParceiro(id, parceiro);
+            bool edicaoRealizada = parceiroAppService.EditarParceiro(id, parceiro);
 
-            if (resultado == "Parceiro editado com sucesso")
+            if (edicaoRealizada == false)
             {
-                return Ok(viewModel);
+                return BadRequest(new
+                {
+                    success = false,
+                    errors = notificador.ObterNotificacoes()
+                });
             }
 
-            return NoContent();
+            return CreatedAtAction(nameof(Create), viewModel);
+
+
+
+            //if (id != viewModel.Id)
+            //    return BadRequest();
+
+            //Parceiro parceiro = mapper.Map<Parceiro>(viewModel);
+
+            //var resultado = parceiroAppService.EditarParceiro(id, parceiro);
+
+            //if (resultado == "Parceiro editado com sucesso")
+            //{
+            //    return Ok(viewModel);
+            //}
+
+            //return NoContent();
         }
 
         [HttpDelete("{id:int}")]
         public ActionResult<ParceiroCreateViewModel> Delete(int id)
         {
-            if (id <= 0)
-                return BadRequest("Id não pode ser menor que 0");
-
-            var resultado = parceiroAppService.ExcluirParceiro(id);
-
-            if (resultado == "Parceiro excluído com sucesso")
+            if (ModelState.IsValid == false)
             {
-                return Ok(id);
+                IEnumerable<ModelError> erros = ModelState.Values.SelectMany(x => x.Errors);
+
+                foreach (var erro in erros)
+                {
+                    var erroMsg = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
+                    notificador.RegistrarNotificacao(erroMsg);
+                }
+
+                return BadRequest(new
+                {
+                    success = false,
+                    errors = notificador.ObterNotificacoes()
+                });
             }
 
-            return NoContent();
+            var delecaoRealizada = parceiroAppService.ExcluirParceiro(id);
+
+            if(delecaoRealizada == false)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    errors = notificador.ObterNotificacoes()
+                });
+            }
+
+            return Ok(id);
+
+            //if (id <= 0)
+            //    return BadRequest("Id não pode ser menor que 0");
+
+            //var resultado = parceiroAppService.ExcluirParceiro(id);
+
+            //if (resultado == "Parceiro excluído com sucesso")
+            //{
+            //    return Ok(id);
+            //}
+
+            //return NoContent();
         }
     }
 
