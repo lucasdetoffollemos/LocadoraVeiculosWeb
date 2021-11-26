@@ -1,4 +1,5 @@
-﻿using LocadoraVeiculos.Dominio;
+﻿using LocadoraVeiculos.Aplicacao.Shared;
+using LocadoraVeiculos.Dominio;
 using LocadoraVeiculos.Dominio.CupomModule;
 using LocadoraVeiculos.Infra.Logging;
 using Serilog;
@@ -16,7 +17,7 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
         bool EditarParceiro(int id, Parceiro parceiro);
     }
 
-    public class ParceiroAppService : IParceiroAppService
+    public class ParceiroAppService : ICadastravel<Parceiro>
     {
         private const string IdParceiroFormat = "[Id do Parceiro: {ParceiroId}]";
 
@@ -49,9 +50,8 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             this.notificador = notificador;
         }
 
-        public bool EditarParceiro(int id, Parceiro parceiro)
+        public bool Editar(int id, Parceiro parceiro)
         {
-
             ParceiroValidator validator = new ParceiroValidator();
 
             var resultado = validator.Validate(parceiro);
@@ -71,7 +71,7 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
 
             //if (nomeParceiroExistnte)
             //{
-                   //Fazer uma verificação para o nome poder ser igual quando o id é o mesmo passado.
+            //Fazer uma verificação para o nome poder ser igual quando o id é o mesmo passado.
             //    notificador.RegistrarNotificacao($"O nome {parceiro.Nome} já está registrado em nossa base.");
 
             //    return false;
@@ -91,21 +91,65 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             }
 
             return true;
-
-            //var cupomAlterado = parceiroRepository.Editar(id, parceiro);
-
-            //if (cupomAlterado == false)
-            //{
-            //    Log.Logger.Aqui().Information(ParceiroNaoEditado + IdParceiroFormat, id);
-
-            //    return ParceiroNaoEditado;
-            //}
-
-            //return ParceiroEditado_ComSucesso;
         }
-        public bool ExcluirParceiro(int id)
-        {
 
+        //public bool EditarParceiro(int id, Parceiro parceiro)
+        //{
+
+        //    ParceiroValidator validator = new ParceiroValidator();
+
+        //    var resultado = validator.Validate(parceiro);
+
+        //    if (resultado.IsValid == false)
+        //    {
+        //        foreach (var erro in resultado.Errors)
+        //        {
+        //            notificador.RegistrarNotificacao(erro.ErrorMessage);
+        //        }
+
+        //        return false;
+        //    }
+
+
+        //    //var nomeParceiroExistnte = parceiroRepository.VerificarNomeExistente(parceiro.Nome);
+
+        //    //if (nomeParceiroExistnte)
+        //    //{
+        //           //Fazer uma verificação para o nome poder ser igual quando o id é o mesmo passado.
+        //    //    notificador.RegistrarNotificacao($"O nome {parceiro.Nome} já está registrado em nossa base.");
+
+        //    //    return false;
+        //    //}
+
+
+
+        //    var parceiroEditado = parceiroRepository.Editar(id, parceiro);
+
+        //    if (parceiroEditado == false)
+        //    {
+        //        Log.Logger.Aqui().Warning(ParceiroNaoEditado + IdParceiroFormat, id);
+
+        //        notificador.RegistrarNotificacao(ParceiroNaoEditado);
+
+        //        return false;
+        //    }
+
+        //    return true;
+
+        //    //var cupomAlterado = parceiroRepository.Editar(id, parceiro);
+
+        //    //if (cupomAlterado == false)
+        //    //{
+        //    //    Log.Logger.Aqui().Information(ParceiroNaoEditado + IdParceiroFormat, id);
+
+        //    //    return ParceiroNaoEditado;
+        //    //}
+
+        //    //return ParceiroEditado_ComSucesso;
+        //}
+
+        public bool Excluir(int id)
+        {
             var parceiroExcluido = parceiroRepository.Excluir(id);
 
             if (parceiroExcluido == false)
@@ -118,28 +162,56 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             }
 
             return true;
-            //var parceiroExcluido = parceiroRepository.Excluir(id);
-
-            //if (parceiroExcluido == false)
-            //{
-            //    Log.Logger.Aqui().Information(ParceiroNaoExcluido + IdParceiroFormat, id);
-
-            //    return ParceiroNaoExcluido;
-            //}
-
-            //return ParceiroExcluido_ComSucesso;
         }
 
-        public bool RegistrarNovoParceiro(Parceiro parceiro)
-        {
+        //public bool ExcluirParceiro(int id)
+        //{
 
+        //    var parceiroExcluido = parceiroRepository.Excluir(id);
+
+        //    if (parceiroExcluido == false)
+        //    {
+        //        Log.Logger.Aqui().Warning(ParceiroNaoExcluido + IdParceiroFormat, id);
+
+        //        notificador.RegistrarNotificacao(ParceiroNaoRegistrado);
+
+        //        return false;
+        //    }
+
+        //    return true;
+        //    //var parceiroExcluido = parceiroRepository.Excluir(id);
+
+        //    //if (parceiroExcluido == false)
+        //    //{
+        //    //    Log.Logger.Aqui().Information(ParceiroNaoExcluido + IdParceiroFormat, id);
+
+        //    //    return ParceiroNaoExcluido;
+        //    //}
+
+        //    //return ParceiroExcluido_ComSucesso;
+        //}
+
+        public bool Existe(int id)
+        {
+            var parceiro = parceiroRepository.SelecionarPorId(id);
+
+            if(parceiro != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool InserirNovo(Parceiro parceiro)
+        {
             ParceiroValidator validator = new ParceiroValidator();
 
             var resultado = validator.Validate(parceiro);
 
             if (resultado.IsValid == false)
             {
-                foreach(var erro in resultado.Errors)
+                foreach (var erro in resultado.Errors)
                 {
                     notificador.RegistrarNotificacao(erro.ErrorMessage);
                 }
@@ -155,7 +227,7 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
 
                 return false;
             }
-                
+
 
             var parceiroInserido = parceiroRepository.Inserir(parceiro);
 
@@ -169,8 +241,49 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             }
 
             return true;
-
         }
+
+        //public bool RegistrarNovoParceiro(Parceiro parceiro)
+        //{
+
+        //    ParceiroValidator validator = new ParceiroValidator();
+
+        //    var resultado = validator.Validate(parceiro);
+
+        //    if (resultado.IsValid == false)
+        //    {
+        //        foreach(var erro in resultado.Errors)
+        //        {
+        //            notificador.RegistrarNotificacao(erro.ErrorMessage);
+        //        }
+
+        //        return false;
+        //    }
+
+        //    var nomeParceiroExistnte = parceiroRepository.VerificarNomeExistente(parceiro.Nome);
+
+        //    if (nomeParceiroExistnte)
+        //    {
+        //        notificador.RegistrarNotificacao($"O nome {parceiro.Nome} já está registrado em nossa base.");
+
+        //        return false;
+        //    }
+                
+
+        //    var parceiroInserido = parceiroRepository.Inserir(parceiro);
+
+        //    if (parceiroInserido == false)
+        //    {
+        //        Log.Logger.Aqui().Warning(ParceiroNaoRegistrado + IdParceiroFormat, parceiro.Id);
+
+        //        notificador.RegistrarNotificacao(ParceiroNaoRegistrado);
+
+        //        return false;
+        //    }
+
+        //    return true;
+
+        //}
 
         public Parceiro SelecionarPorId(int id)
         {

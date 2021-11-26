@@ -28,7 +28,7 @@ namespace LocadoraVeiculos.WebApi.Config.AutoFacConfig
 
             //PARCEIRO
             builder.RegisterType<ParceiroOrmDao>().As<IParceiroRepository>();
-            builder.RegisterType<ParceiroAppService>().As<IParceiroAppService>();
+            builder.RegisterType<ParceiroAppService>().InstancePerDependency();
 
             //CUPOM
             builder.RegisterType<CupomOrmDao>().As<ICupomRepository>();
