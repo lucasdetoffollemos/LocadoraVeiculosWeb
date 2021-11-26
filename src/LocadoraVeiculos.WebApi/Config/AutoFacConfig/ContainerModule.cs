@@ -32,15 +32,15 @@ namespace LocadoraVeiculos.WebApi.Config.AutoFacConfig
 
             //CUPOM
             builder.RegisterType<CupomOrmDao>().As<ICupomRepository>();
-            builder.RegisterType<CupomAppService>().As<ICupomAppService>();
+            builder.RegisterType<CupomAppService>().InstancePerDependency();
 
             //FUNCIONARIO
             builder.RegisterType<FuncionarioOrmDao>().As<IFuncionarioRepository>();
-            builder.RegisterType<FuncionarioAppService>().As<IFuncionarioAppService>();
+            builder.RegisterType<FuncionarioAppService>().InstancePerDependency();
 
             //TAXA
             builder.RegisterType<TaxaOrmDao>().As<ITaxaRepository>();
-            builder.RegisterType<TaxaAppService>().As<ITaxaAppService>();
+            builder.RegisterType<TaxaAppService>().InstancePerDependency();
 
 
             builder.RegisterType<Mapper>().As<IMapper>();

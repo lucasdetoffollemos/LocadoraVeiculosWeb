@@ -1,4 +1,5 @@
-﻿using LocadoraVeiculos.Dominio;
+﻿using LocadoraVeiculos.Aplicacao.Shared;
+using LocadoraVeiculos.Dominio;
 using LocadoraVeiculos.Dominio.TaxaModule;
 using LocadoraVeiculos.Infra.Logging;
 using Serilog;
@@ -18,7 +19,7 @@ namespace LocadoraVeiculos.Aplicacao.TaxaModule
 
         List<Taxa> SelecionarTaxasNaoAdicionadas(List<Taxa> taxasJaAdicionadas);
     }
-    public class TaxaAppService : ITaxaAppService
+    public class TaxaAppService : ICadastravel<Taxa>
     {
 
         private const string IdTaxaFormat = "[Id da Taxa: {TaxaId}]";
@@ -52,7 +53,7 @@ namespace LocadoraVeiculos.Aplicacao.TaxaModule
             this.notificador = notificador;
         }
 
-        public bool EditarTaxa(int id, Taxa taxa)
+        public bool Editar(int id, Taxa taxa)
         {
             TaxaValidator validator = new();
 
@@ -82,7 +83,7 @@ namespace LocadoraVeiculos.Aplicacao.TaxaModule
             return true;
         }
 
-        public bool ExcluirTaxa(int id)
+        public bool Excluir(int id)
         {
             var taxaExcluida = taxaRepository.Excluir(id);
 
@@ -98,7 +99,17 @@ namespace LocadoraVeiculos.Aplicacao.TaxaModule
             return true;
         }
 
-        public bool RegistrarNovaTaxa(Taxa taxa)
+        public bool Existe(int id)
+        {
+            var taxa = taxaRepository.SelecionarPorId(id);
+
+            if (taxa == null)
+                return false;
+
+            return true;
+        }
+
+        public bool InserirNovo(Taxa taxa)
         {
             TaxaValidator validator = new TaxaValidator();
 

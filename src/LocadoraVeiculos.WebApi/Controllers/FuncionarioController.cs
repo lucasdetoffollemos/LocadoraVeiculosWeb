@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using LocadoraVeiculos.Aplicacao.FuncionarioModule;
+using LocadoraVeiculos.Dominio;
 using LocadoraVeiculos.Dominio.FuncionarioModule;
+using LocadoraVeiculos.WebApi.Controllers.Shared;
 using LocadoraVeiculos.WebApi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,106 +16,20 @@ namespace LocadoraVeiculos.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FuncionarioController : ControllerBase
+    public class FuncionarioController : BaseController<Funcionario,
+                                                     FuncionarioListViewModel,
+                                                     FuncionarioDetailsViewModel,
+                                                     FuncionarioCreateViewModel,
+                                                     FuncionarioEditViewModel>
     {
 
-        private readonly IFuncionarioRepository funcionarioRepository;
-        private readonly IFuncionarioAppService funcionarioAppService;
-        private readonly IMapper mapper;
-
-        public FuncionarioController(IFuncionarioRepository funcionarioRepository, IFuncionarioAppService funcionarioAppService, IMapper mapper)
-        {
-            this.funcionarioRepository = funcionarioRepository;
-            this.funcionarioAppService = funcionarioAppService;
-            this.mapper = mapper;
-        }
-
-
-        [HttpGet]
-        public List<FuncionarioListViewModel> GetAll()
-        {
-            var funcionarios = funcionarioRepository.SelecionarTodos();
-
-            return mapper.Map<List<FuncionarioListViewModel>>(funcionarios);
-        }
-
        
-        [HttpGet("{id}")]
-        public ActionResult<FuncionarioDetailsViewModel> Get(int id)
+
+        public FuncionarioController(FuncionarioAppService funcionarioAppService, IMapper mapper, INotificador notificador): base(funcionarioAppService, mapper, notificador)
         {
-            var funcionarioSelecionado = funcionarioRepository.SelecionarPorId(id);
-
-            if(funcionarioSelecionado == null)
-            {
-                return NotFound(id);
-            }
-
-            var funcionarioVm = mapper.Map<FuncionarioDetailsViewModel>(funcionarioSelecionado);
-
-            return Ok(funcionarioVm);
-        }
-
         
-        [HttpPost]
-        public ActionResult<FuncionarioCreateViewModel> Create(FuncionarioCreateViewModel funcionarioVm)
-        {
-            if(ModelState.IsValid == false)
-            {
-                var erros = ModelState.Values.SelectMany(x => x.Errors);
-
-                return BadRequest(erros);
-            }
-            
-            
-            Funcionario funcionario = mapper.Map<Funcionario>(funcionarioVm);
-
-            var resultado = funcionarioAppService.RegistrarNovoFuncionario(funcionario);
-
-            if(resultado == "Funcionario registrado com sucesso")
-            {
-                return CreatedAtAction(nameof(Create), funcionarioVm);
-            }
-
-            return NoContent();
         }
 
-        
-        [HttpPut("{id}")]
-        public ActionResult<FuncionarioEditViewModel> Edit(int id, FuncionarioEditViewModel funcionarioVm)
-        {
-            if (id != funcionarioVm.Id)
-                return BadRequest();
 
-
-            Funcionario funcionario = mapper.Map<Funcionario>(funcionarioVm);
-
-            var resultado = funcionarioAppService.EditarFuncionario(id, funcionario);
-
-            if(resultado == "Funcionario editado com sucesso")
-            {
-                return Ok(funcionarioVm);
-            }
-
-            return NoContent();
-
-        }
-
-        
-        [HttpDelete("{id}")]
-        public ActionResult<FuncionarioCreateViewModel> Delete(int id)
-        {
-            if (id <= 0)
-                return BadRequest("Id não pode ser menor que 0");
-
-            var resultado = funcionarioAppService.ExcluirFuncionario(id);
-
-
-            if (resultado == "Funcionario excluído com sucesso")
-            {
-                return Ok(id);
-            }
-
-            return NoContent();
-        }
     }
 }

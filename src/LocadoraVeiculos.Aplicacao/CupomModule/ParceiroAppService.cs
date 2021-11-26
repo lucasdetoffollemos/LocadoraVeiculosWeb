@@ -156,7 +156,7 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             {
                 Log.Logger.Aqui().Warning(ParceiroNaoExcluido + IdParceiroFormat, id);
 
-                notificador.RegistrarNotificacao(ParceiroNaoRegistrado);
+                notificador.RegistrarNotificacao(ParceiroNaoExcluido);
 
                 return false;
             }

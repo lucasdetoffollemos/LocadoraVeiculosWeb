@@ -1,4 +1,6 @@
-﻿using LocadoraVeiculos.Dominio.CupomModule;
+﻿using LocadoraVeiculos.Aplicacao.Shared;
+using LocadoraVeiculos.Dominio;
+using LocadoraVeiculos.Dominio.CupomModule;
 using LocadoraVeiculos.Infra.Logging;
 using Serilog;
 using System;
@@ -16,13 +18,15 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
         string EditarCupom(int id, Cupom cupomAlterado);
     }
 
-    public class CupomAppService : ICupomAppService
+    public class CupomAppService : ICadastravel<Cupom>
     {
         private readonly ICupomRepository cupomRepository;
+        private INotificador notificador;
 
-        public CupomAppService(ICupomRepository cupomRepository)
+        public CupomAppService(ICupomRepository cupomRepository,INotificador notificador)
         {
             this.cupomRepository = cupomRepository;
+            this.notificador = notificador;
         }
 
         private const string IdCupomFormat = "[Id do Cupom: {CupomId}]";
@@ -46,52 +50,8 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             "Cupom excluído com sucesso";
 
 
-        public string EditarCupom(int id, Cupom cupom)
-        {
-            var cupomAlterado = cupomRepository.Editar(id, cupom);
-
-            if (cupomAlterado == false)
-            {
-                Log.Logger.Aqui().Information(CupomNaoEditado + IdCupomFormat, id);
-
-                return CupomNaoEditado;
-            }
-
-            return CupomEditado_ComSucesso;
-        }
-
-        public string ExcluirCupom(int id)
-        {
-            var cupomExcluido = cupomRepository.Excluir(id);
-
-            if (cupomExcluido == false)
-            {
-                Log.Logger.Aqui().Information(CupomNaoExcluido + IdCupomFormat, id);
-
-                return CupomNaoExcluido;
-            }
-
-            return CupomExcluido_ComSucesso;
-        }
-
-        public string RegistrarNovoCupom(Cupom cupom)
-        {
-            var resultado = cupom.Validar();
-
-            if (resultado != "ESTA_VALIDO")
-                return resultado;
-
-            var cupomInserido = cupomRepository.Inserir(cupom);
-
-            if (cupomInserido == false)
-            {
-                Log.Logger.Aqui().Warning(CupomNaoRegistrado + IdCupomFormat, cupom.Id);
-
-                return CupomNaoRegistrado;
-            }
-
-            return CupomRegistrado_ComSucesso;
-        }
+      
+      
 
         public Cupom SelecionarPorId(int id)
         {
@@ -108,6 +68,91 @@ namespace LocadoraVeiculos.Aplicacao.CupomModule
             return cupomRepository.SelecionarCuponsAtivos(data);
         }
 
+        public bool InserirNovo(Cupom cupom)
+        {
+            CupomValidator validator = new CupomValidator();
 
+            var resultado = validator.Validate(cupom);
+
+            if (resultado.IsValid == false)
+            {
+                foreach (var erro in resultado.Errors)
+                {
+                    notificador.RegistrarNotificacao(erro.ErrorMessage);
+                }
+
+                return false;
+            }
+
+            var cupomInserido = cupomRepository.Inserir(cupom);
+
+            if (cupomInserido == false)
+            {
+                Log.Logger.Aqui().Warning(CupomNaoRegistrado + IdCupomFormat, cupom.Id);
+
+                notificador.RegistrarNotificacao(CupomNaoRegistrado);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Editar(int id, Cupom cupom)
+        {
+            CupomValidator validator = new CupomValidator();
+
+            var resultado = validator.Validate(cupom);
+
+            if (resultado.IsValid == false)
+            {
+                foreach (var erro in resultado.Errors)
+                {
+                    notificador.RegistrarNotificacao(erro.ErrorMessage);
+                }
+
+                return false;
+            }
+
+            var cupomEditado = cupomRepository.Editar(id, cupom);
+
+            if (cupomEditado == false)
+            {
+                Log.Logger.Aqui().Warning(CupomNaoEditado + IdCupomFormat, id);
+
+                notificador.RegistrarNotificacao(CupomNaoEditado);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Existe(int id)
+        {
+            var cupom = cupomRepository.SelecionarPorId(id);
+
+            if (cupom == null)
+                return false;
+
+            return true;
+
+        }
+
+        public bool Excluir(int id)
+        {
+            var cupomExcluido = cupomRepository.Excluir(id);
+
+            if (cupomExcluido == false)
+            {
+                Log.Logger.Aqui().Warning(CupomNaoExcluido + IdCupomFormat, id);
+
+                notificador.RegistrarNotificacao(CupomNaoExcluido);
+
+                return false;
+            }
+
+            return true;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using LocadoraVeiculos.Dominio.FuncionarioModule;
+﻿using LocadoraVeiculos.Aplicacao.Shared;
+using LocadoraVeiculos.Dominio;
+using LocadoraVeiculos.Dominio.FuncionarioModule;
 using LocadoraVeiculos.Infra.Logging;
 using Serilog;
 using System;
@@ -20,7 +22,7 @@ namespace LocadoraVeiculos.Aplicacao.FuncionarioModule
         string EditarFuncionario(int id, Funcionario funcionario);
     }
 
-    public class FuncionarioAppService : IFuncionarioAppService
+    public class FuncionarioAppService : ICadastravel<Funcionario>
     {
 
         private const string IdFuncionario_Format = "[Id do Funcionario: {FuncionarioId}]";
@@ -45,60 +47,105 @@ namespace LocadoraVeiculos.Aplicacao.FuncionarioModule
             "Funcionario excluído com sucesso";
 
         private readonly IFuncionarioRepository funcionarioRepository;
+        private readonly INotificador notificador;
 
-        public FuncionarioAppService(IFuncionarioRepository funcionarioRepository)
+        public FuncionarioAppService(IFuncionarioRepository funcionarioRepository, INotificador notificador)
         {
             this.funcionarioRepository = funcionarioRepository;
+            this.notificador = notificador;
         }
 
-
-        public string EditarFuncionario(int id, Funcionario funcionario)
+        public bool Editar(int id, Funcionario funcionario)
         {
-            var funcionarioAlterado = funcionarioRepository.Editar(id, funcionario);
+            FuncionarioValidator validator = new FuncionarioValidator();
 
-            if(funcionarioAlterado == false)
+            var resultado = validator.Validate(funcionario);
+
+            if (resultado.IsValid == false)
             {
-                Log.Logger.Aqui().Information(FuncionarioNaoEditado + IdFuncionario_Format + id);
+                foreach (var erro in resultado.Errors)
+                {
+                    notificador.RegistrarNotificacao(erro.ErrorMessage);
+                }
 
-                return FuncionarioNaoEditado;
+                return false;
             }
 
-            return FuncionarioEditado_ComSucesso;
+
+         
+
+
+            var funcionarioEditado = funcionarioRepository.Editar(id, funcionario);
+
+            if (funcionarioEditado == false)
+            {
+                Log.Logger.Aqui().Warning(FuncionarioNaoEditado + IdFuncionario_Format, id);
+
+                notificador.RegistrarNotificacao(FuncionarioNaoEditado);
+
+                return false;
+            }
+
+            return true;
         }
 
-        public string ExcluirFuncionario(int id)
+    
+
+        public bool Excluir(int id)
         {
             var funcionarioExcluido = funcionarioRepository.Excluir(id);
 
             if (funcionarioExcluido == false)
             {
-                Log.Logger.Aqui().Information(FuncionarioNaoExcluido + IdFuncionario_Format, id);
+                Log.Logger.Aqui().Warning(FuncionarioNaoExcluido + IdFuncionario_Format, id);
 
-                return FuncionarioNaoExcluido;
+                notificador.RegistrarNotificacao(FuncionarioNaoExcluido);
+
+                return false;
             }
 
-            return FuncionarioExcluido_ComSucesso;
+            return true;
         }
 
-        public string RegistrarNovoFuncionario(Funcionario funcionario)
+        public bool Existe(int id)
         {
+            var funcionario = funcionarioRepository.SelecionarPorId(id);
 
-            var resultado = funcionario.Validar();
+            if (funcionario == null)
+                return false;
 
-            if (resultado != "ESTA_VALIDO")
-                return resultado;
+            return true;
+        }
 
+        public bool InserirNovo(Funcionario funcionario)
+        {
+            FuncionarioValidator validator = new FuncionarioValidator();
 
+            var resultado = validator.Validate(funcionario);
+
+            if (resultado.IsValid == false)
+            {
+                foreach (var erro in resultado.Errors)
+                {
+                    notificador.RegistrarNotificacao(erro.ErrorMessage);
+                }
+
+                return false;
+            }
+
+          
             var funcionarioInserido = funcionarioRepository.Inserir(funcionario);
 
-            if(funcionarioInserido == false)
+            if (funcionarioInserido == false)
             {
                 Log.Logger.Aqui().Warning(FuncionarioNaoRegistrado + IdFuncionario_Format, funcionario.Id);
 
-                return FuncionarioNaoRegistrado;
+                notificador.RegistrarNotificacao(FuncionarioNaoRegistrado);
+
+                return false;
             }
 
-            return FuncionarioRegistrado_ComSucesso;
+            return true;
         }
 
         public Funcionario SelecionarPorId(int id)
