@@ -40,25 +40,29 @@ export class ParceiroEditarComponent implements OnInit {
   }
 
   atualizarParceiro() {
-    this.parceiro = Object.assign({}, this.parceiro, this.cadastroForm.value);
-    this.parceiro.id = this.id;
 
-    this.servicoParceiro.editarParceiro(this.parceiro)
-    .subscribe(
-      parceiro => {
-        this.toastService.show('Parceiro ' + parceiro.nome + ' editado com sucesso!',
-          { classname: 'bg-success text-light', delay: 5000 });
-        setTimeout(() => {
-          this.router.navigate(['parceiro/listar']);
-        }, 5000);
-      },
-      erro => {
-        for(let nomeErro in erro.error.errors){
-          const mensagemErro = erro.error.errors[nomeErro];
-          this.toastService.show('Erro ao editar parceiro: ' + mensagemErro,
-          { classname: 'bg-danger text-light', delay: 5000 });
-        }
-      });
+    if(this.cadastroForm.valid){
+      this.parceiro = Object.assign({}, this.parceiro, this.cadastroForm.value);
+      this.parceiro.id = this.id;
+  
+      this.servicoParceiro.editarParceiro(this.parceiro)
+      .subscribe(
+        parceiro => {
+          this.toastService.show('Parceiro ' + parceiro.nome + ' editado com sucesso!',
+            { classname: 'bg-success text-light', delay: 5000 });
+          setTimeout(() => {
+            this.router.navigate(['parceiro/listar']);
+          }, 5000);
+        },
+        erro => {
+          for(let nomeErro in erro.error.errors){
+            const mensagemErro = erro.error.errors[nomeErro];
+            this.toastService.show('Erro ao editar parceiro: ' + mensagemErro,
+            { classname: 'bg-danger text-light', delay: 5000 });
+          }
+        });
+    }
+   
   }
 
   cancelar(): void {

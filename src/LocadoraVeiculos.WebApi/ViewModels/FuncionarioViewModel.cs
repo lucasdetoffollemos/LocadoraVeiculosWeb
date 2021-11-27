@@ -60,7 +60,6 @@ namespace LocadoraVeiculos.WebApi.ViewModels
         public DateTime DataAdmissao { get; set; }
 
         [Required(ErrorMessage = "O campo salario é obrigatório.")]
-        [Range(0, 10000000)]
         public double Salario { get; set; }
     }
 }

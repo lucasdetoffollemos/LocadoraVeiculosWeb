@@ -27,24 +27,28 @@ export class FuncionarioCriarComponent implements OnInit {
   }
 
   adicionarFuncionario() {
-    this.funcionario = Object.assign({}, this.funcionario, this.cadastroForm.value);
+    if(this.cadastroForm.valid){
 
-    this.servicoFuncionario.adicionarFuncionario(this.funcionario)
-    .subscribe(
-      funcionario => {
-        this.toastService.show('Funcionario ' + funcionario.nome + ' adicionado com sucesso!',
-          { classname: 'bg-success text-light', delay: 5000 });
-        setTimeout(() => {
-          this.router.navigate(['funcionario/listar']);
-        }, 5000);
-      },
-      erro => {
-        for(let nomeErro in erro.error.errors){
-          const mensagemErro = erro.error.errors[nomeErro];
-          this.toastService.show('Erro ao adicionario funcionario: ' + mensagemErro,
-          { classname: 'bg-danger text-light', delay: 5000 });
-        }
-      });
+      this.funcionario = Object.assign({}, this.funcionario, this.cadastroForm.value);
+      
+      this.servicoFuncionario.adicionarFuncionario(this.funcionario)
+      .subscribe(
+        funcionario => {
+          this.toastService.show('Funcionario ' + funcionario.nome + ' adicionado com sucesso!',
+            { classname: 'bg-success text-light', delay: 5000 });
+          setTimeout(() => {
+            this.router.navigate(['funcionario/listar']);
+          }, 5000);
+        },
+        erro => {
+          for(let nomeErro in erro.error.errors){
+            const mensagemErro = erro.error.errors[nomeErro];
+            this.toastService.show('Erro ao adicionario funcionario: ' + mensagemErro,
+            { classname: 'bg-danger text-light', delay: 5000 });
+          }
+        });
+    }
+   
   }
 
   cancelar(): void {

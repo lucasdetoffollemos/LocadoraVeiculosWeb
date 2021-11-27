@@ -23,8 +23,7 @@ namespace LocadoraVeiculos.WebApi.Controllers
                                                      FuncionarioEditViewModel>
     {
 
-       
-
+      
         public FuncionarioController(FuncionarioAppService funcionarioAppService, IMapper mapper, INotificador notificador): base(funcionarioAppService, mapper, notificador)
         {
         

@@ -45,24 +45,28 @@ export class CupomCriarComponent implements OnInit {
   }
 
   adicionarCupom() {
-    this.cupom = Object.assign({}, this.cupom, this.cadastroForm.value);
 
-    this.servicoCupom.adicionarCupom(this.cupom)
-    .subscribe(
-      cupom => {
-        this.toastService.show('Cupom ' + cupom.nome + ' adicionado com sucesso!',
-          { classname: 'bg-success text-light', delay: 5000 });
-        setTimeout(() => {
-          this.router.navigate(['cupom/listar']);
-        }, 5000);
-      },
-      erro => {
-        for(let nomeErro in erro.error.errors){
-          const mensagemErro = erro.error.errors[nomeErro];
-          this.toastService.show('Erro ao adicionario cupom: ' + mensagemErro,
-          { classname: 'bg-danger text-light', delay: 5000 });
-        }
-      });
+    if(this.cadastroForm.valid){
+      this.cupom = Object.assign({}, this.cupom, this.cadastroForm.value);
+
+      this.servicoCupom.adicionarCupom(this.cupom)
+      .subscribe(
+        cupom => {
+          this.toastService.show('Cupom ' + cupom.nome + ' adicionado com sucesso!',
+            { classname: 'bg-success text-light', delay: 5000 });
+          setTimeout(() => {
+            this.router.navigate(['cupom/listar']);
+          }, 5000);
+        },
+        erro => {
+          for(let nomeErro in erro.error.errors){
+            const mensagemErro = erro.error.errors[nomeErro];
+            this.toastService.show('Erro ao adicionario cupom: ' + mensagemErro,
+            { classname: 'bg-danger text-light', delay: 5000 });
+          }
+        });
+    }
+    
   }
 
   carregarParceiros(): void {

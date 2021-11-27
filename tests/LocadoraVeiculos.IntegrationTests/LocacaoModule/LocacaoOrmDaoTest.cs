@@ -297,7 +297,7 @@ namespace LocadoraVeiculos.IntegrationTests.LocacaoModule
         private void InserirGruposEhPlanos()
         {
             suv = new GrupoVeiculo("SUV");
-
+            
             suv.AdicionarPlanos(PlanoCobranca.Diario(100, 10));
             suv.AdicionarPlanos(PlanoCobranca.KmControlado(200, 100, 20));
             suv.AdicionarPlanos(PlanoCobranca.KmLivre(300));

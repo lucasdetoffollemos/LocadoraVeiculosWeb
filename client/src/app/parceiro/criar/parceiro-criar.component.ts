@@ -23,24 +23,26 @@ export class ParceiroCriarComponent implements OnInit {
   }
 
   adicionarParceiro() {
-    this.parceiro = Object.assign({}, this.parceiro, this.cadastroForm.value);
+    if(this.cadastroForm.valid){
+      this.parceiro = Object.assign({}, this.parceiro, this.cadastroForm.value);
 
-    this.servicoParceiro.adicionarParceiro(this.parceiro)
-    .subscribe(
-      parceiro => {
-        this.toastService.show('Parceiro ' + parceiro.nome + ' adicionado com sucesso!',
-          { classname: 'bg-success text-light', delay: 5000 });
-        setTimeout(() => {
-          this.router.navigate(['parceiro/listar']);
-        }, 5000);
-      },
-      erro => {
-        for(let nomeErro in erro.error.errors){
-          const mensagemErro = erro.error.errors[nomeErro];
-          this.toastService.show('Erro ao adicionar parceiro: ' + mensagemErro,
-          { classname: 'bg-danger text-light', delay: 5000 });
-        }
-      });
+      this.servicoParceiro.adicionarParceiro(this.parceiro)
+      .subscribe(
+        parceiro => {
+          this.toastService.show('Parceiro ' + parceiro.nome + ' adicionado com sucesso!',
+            { classname: 'bg-success text-light', delay: 5000 });
+          setTimeout(() => {
+            this.router.navigate(['parceiro/listar']);
+          }, 5000);
+        },
+        erro => {
+          for(let nomeErro in erro.error.errors){
+            const mensagemErro = erro.error.errors[nomeErro];
+            this.toastService.show('Erro ao adicionar parceiro: ' + mensagemErro,
+            { classname: 'bg-danger text-light', delay: 5000 });
+          }
+        });
+    }
   }
 
   cancelar(): void {

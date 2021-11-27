@@ -35,27 +35,30 @@ export class EditarFuncionarioComponent implements OnInit {
   }
 
   atualizarFuncionario() {
-    this.funcionario = Object.assign({}, this.funcionario, this.cadastroForm.value);
-    this.funcionario.id = this.id;
-
     
+    if(this.cadastroForm.valid){
 
-    this.servicoFuncionario.editarFuncionario(this.funcionario)
-    .subscribe(
-      funcionario => {
-        this.toastService.show('Funcionario ' + funcionario.nome + ' editado com sucesso!',
-          { classname: 'bg-success text-light', delay: 5000 });
-        setTimeout(() => {
-          this.router.navigate(['funcionario/listar']);
-        }, 5000);
-      },
-      erro => {
-        for(let nomeErro in erro.error.errors){
-          const mensagemErro = erro.error.errors[nomeErro];
-          this.toastService.show('Erro ao editar funcionario: ' + mensagemErro,
-          { classname: 'bg-danger text-light', delay: 5000 });
-        }
-      });
+      this.funcionario = Object.assign({}, this.funcionario, this.cadastroForm.value);
+      this.funcionario.id = this.id;
+
+      this.servicoFuncionario.editarFuncionario(this.funcionario)
+      .subscribe(
+        funcionario => {
+          this.toastService.show('Funcionario ' + funcionario.nome + ' editado com sucesso!',
+            { classname: 'bg-success text-light', delay: 5000 });
+          setTimeout(() => {
+            this.router.navigate(['funcionario/listar']);
+          }, 5000);
+        },
+        erro => {
+          for(let nomeErro in erro.error.errors){
+            const mensagemErro = erro.error.errors[nomeErro];
+            this.toastService.show('Erro ao editar funcionario: ' + mensagemErro,
+            { classname: 'bg-danger text-light', delay: 5000 });
+          }
+        });
+    }
+    
   }
 
   carregarFuncionario() {

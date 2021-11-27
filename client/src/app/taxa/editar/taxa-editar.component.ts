@@ -57,25 +57,29 @@ export class TaxaEditarComponent implements OnInit {
   }
 
   atualizarTaxa() {
-    this.taxa = Object.assign({}, this.taxa, this.cadastroForm.value);
-    this.taxa.id = this.id;
 
-    this.servicoTaxa.editarTaxa(this.taxa)
-    .subscribe(
-      taxa => {
-        this.toastService.show('Taxa ' + taxa.nome + ' editada com sucesso!',
-          { classname: 'bg-success text-light', delay: 5000 });
-        setTimeout(() => {
-          this.router.navigate(['taxa/listar']);
-        }, 5000);
-      },
-      erro => {
-        for(let nomeErro in erro.error.errors){
-          const mensagemErro = erro.error.errors[nomeErro];
-          this.toastService.show('Erro ao editar cupom: ' + mensagemErro,
-          { classname: 'bg-danger text-light', delay: 5000 });
-        }
-      });
+    if(this.cadastroForm.valid){
+      this.taxa = Object.assign({}, this.taxa, this.cadastroForm.value);
+      this.taxa.id = this.id;
+  
+      this.servicoTaxa.editarTaxa(this.taxa)
+      .subscribe(
+        taxa => {
+          this.toastService.show('Taxa ' + taxa.nome + ' editada com sucesso!',
+            { classname: 'bg-success text-light', delay: 5000 });
+          setTimeout(() => {
+            this.router.navigate(['taxa/listar']);
+          }, 5000);
+        },
+        erro => {
+          for(let nomeErro in erro.error.errors){
+            const mensagemErro = erro.error.errors[nomeErro];
+            this.toastService.show('Erro ao editar cupom: ' + mensagemErro,
+            { classname: 'bg-danger text-light', delay: 5000 });
+          }
+        });
+    }
+    
   }
 
   cancelar(): void {
