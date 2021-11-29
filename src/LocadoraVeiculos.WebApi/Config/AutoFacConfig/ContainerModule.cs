@@ -2,14 +2,17 @@
 using AutoMapper;
 using LocadoraVeiculos.Aplicacao.CupomModule;
 using LocadoraVeiculos.Aplicacao.FuncionarioModule;
+using LocadoraVeiculos.Aplicacao.GrupoVeiculoModule;
 using LocadoraVeiculos.Aplicacao.TaxaModule;
 using LocadoraVeiculos.Dominio;
 using LocadoraVeiculos.Dominio.CupomModule;
 using LocadoraVeiculos.Dominio.FuncionarioModule;
+using LocadoraVeiculos.Dominio.GrupoVeiculoModule;
 using LocadoraVeiculos.Dominio.TaxaModule;
 using LocadoraVeiculos.Infra.ORM;
 using LocadoraVeiculos.Infra.ORM.CupomModule;
 using LocadoraVeiculos.Infra.ORM.FuncionarioModule;
+using LocadoraVeiculos.Infra.ORM.GrupoVeiculoModule;
 using LocadoraVeiculos.Infra.ORM.TaxaModule;
 using System;
 using System.Collections.Generic;
@@ -41,6 +44,10 @@ namespace LocadoraVeiculos.WebApi.Config.AutoFacConfig
             //TAXA
             builder.RegisterType<TaxaOrmDao>().As<ITaxaRepository>();
             builder.RegisterType<TaxaAppService>().InstancePerDependency();
+
+            //GRUPO AUTOMOVEIS
+            builder.RegisterType<GrupoVeiculoOrmDao>().As<IGrupoVeiculoRepository>();
+            builder.RegisterType<GrupoVeiculoAppService>().InstancePerDependency();
 
 
             builder.RegisterType<Mapper>().As<IMapper>();

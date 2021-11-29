@@ -21,7 +21,6 @@ namespace LocadoraVeiculos.WebApi.Config.AutoMapperConfig
             CreateMap<ParceiroEditViewModel, Parceiro>();
 
             CreateMap<Cupom, CupomListViewModel>();
-
         }
     }
 }

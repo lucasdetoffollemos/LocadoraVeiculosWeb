@@ -16,14 +16,26 @@ namespace LocadoraVeiculos.Infra.ORM.GrupoVeiculoModule
         {
             List<GrupoVeiculo> gruposComPlanos = null;
 
-            if (carregarPlanos)
-                gruposComPlanos = dbSet
-                    .Include(x => x.PlanosCobranca)
-                    .ToList();
-            else
-                gruposComPlanos = dbSet.ToList();
+            gruposComPlanos = dbSet
+                .Include(x => x.PlanosCobranca)
+                .Include(x => x.Veiculos)
+                .ToList();
+            
+            gruposComPlanos = dbSet.ToList();
 
             return gruposComPlanos;
+        }
+
+        public override GrupoVeiculo SelecionarPorId(int id)
+        {
+           var grupoVeiculo = dbSet
+                .Include(x => x.PlanosCobranca)
+                .Include(x => x.Veiculos)
+                .SingleOrDefault(x => x.Id.Equals(id));
+
+
+
+            return grupoVeiculo;
         }
     }
 }

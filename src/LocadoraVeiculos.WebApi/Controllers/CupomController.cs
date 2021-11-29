@@ -25,8 +25,6 @@ namespace LocadoraVeiculos.WebApi.Controllers
 
     {
 
-
-
         public CupomController(CupomAppService cupomAppService, IMapper mapper, INotificador notificador) : base(cupomAppService, mapper, notificador)
         {
 
