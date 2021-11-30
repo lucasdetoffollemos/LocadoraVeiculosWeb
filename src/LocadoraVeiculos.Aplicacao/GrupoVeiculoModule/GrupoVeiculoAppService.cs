@@ -46,14 +46,54 @@ namespace LocadoraVeiculos.Aplicacao.GrupoVeiculoModule
             this.notificador = notificador;
         }
 
-        public bool Editar(int id, GrupoVeiculo registro)
+        public bool Editar(int id, GrupoVeiculo grupoVeiculo)
         {
-            throw new System.NotImplementedException();
+            GrupoVeiculoValidator validator = new GrupoVeiculoValidator();
+
+            var resultado = validator.Validate(grupoVeiculo);
+
+            if (resultado.IsValid == false)
+            {
+                foreach (var erro in resultado.Errors)
+                {
+                    notificador.RegistrarNotificacao(erro.ErrorMessage);
+                }
+
+                return false;
+            }
+
+
+
+
+
+            var grupoVeiculoEditado = grupoVeiculoRepository.Editar(id, grupoVeiculo);
+
+            if (grupoVeiculoEditado == false)
+            {
+                Log.Logger.Aqui().Warning(GrupoAutomovelNaoEditado + IdGrupoAutomovel_Format, id);
+
+                notificador.RegistrarNotificacao(GrupoAutomovelNaoEditado);
+
+                return false;
+            }
+
+            return true;
         }
 
         public bool Excluir(int id)
         {
-            throw new System.NotImplementedException();
+            var grupoVeiculoExcluido = grupoVeiculoRepository.Excluir(id);
+
+            if (grupoVeiculoExcluido == false)
+            {
+                Log.Logger.Aqui().Warning(GrupoAutomovelNaoExcluido + IdGrupoAutomovel_Format, id);
+
+                notificador.RegistrarNotificacao(GrupoAutomovelNaoExcluido);
+
+                return false;
+            }
+
+            return true;
         }
 
         public bool Existe(int id)
@@ -82,15 +122,6 @@ namespace LocadoraVeiculos.Aplicacao.GrupoVeiculoModule
 
                 return false;
             }
-
-            //diario
-            grupoVeiculo.AdicionarPlanos(PlanoCobranca.Diario(1, 2));
-
-            //controlado
-            grupoVeiculo.AdicionarPlanos(PlanoCobranca.KmControlado(1, 100, 10));
-
-            //livre
-            grupoVeiculo.AdicionarPlanos(PlanoCobranca.KmLivre(1000));
 
 
             var grupoVeiculoInserido = grupoVeiculoRepository.Inserir(grupoVeiculo);

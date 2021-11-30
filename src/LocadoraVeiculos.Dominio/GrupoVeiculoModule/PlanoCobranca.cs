@@ -10,6 +10,7 @@ namespace LocadoraVeiculos.Dominio.GrupoVeiculoModule
         {
         }
 
+        
         private PlanoCobranca(decimal valorDia, decimal valorKMRodado)
         {
             TipoPlano = TipoPlanoCobrancaEnum.PlanoDiario;
@@ -19,7 +20,19 @@ namespace LocadoraVeiculos.Dominio.GrupoVeiculoModule
 
         private PlanoCobranca(decimal valorDia, int kilometragemLivreInclusa, decimal valorKMRodado)
         {
-            TipoPlano = TipoPlanoCobrancaEnum.PlanoKmControlado;
+            if(kilometragemLivreInclusa != 0 && valorKMRodado != 0)
+            {
+                TipoPlano = TipoPlanoCobrancaEnum.PlanoKmControlado;
+            }
+            else if(kilometragemLivreInclusa == 0 && valorKMRodado == 0)
+            {
+                TipoPlano = TipoPlanoCobrancaEnum.PlanoKmLivre;
+            }
+            else if(kilometragemLivreInclusa == 0)
+            {
+                TipoPlano = TipoPlanoCobrancaEnum.PlanoDiario;
+            } 
+            
             ValorDia = valorDia;
             KilometragemLivreInclusa = kilometragemLivreInclusa;
             ValorKMRodado = valorKMRodado;

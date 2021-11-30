@@ -63,7 +63,7 @@ namespace LocadoraVeiculos.WebApi.ViewModels
             [Required(ErrorMessage = "Campo nome é obrigatório.")]
             public string Nome { get; set; }
 
-            public List<PlanoCobrancaDetailViewModel> PlanosCobranca { get; set; }
+            public List<PlanoCobrancaCreateViewModel> PlanosCobranca { get; set; }
         }
     }
 }
