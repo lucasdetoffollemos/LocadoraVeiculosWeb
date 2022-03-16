@@ -6,10 +6,13 @@ import { CupomListarComponent } from './cupom/listar/cupom-listar.component';
 import { FuncionarioCriarComponent } from './funcionario/criar/funcionario-criar.component';
 import { EditarFuncionarioComponent } from './funcionario/editar/editar-funcionario.component';
 import { FuncionarioListarComponent } from './funcionario/listar/funcionario-listar.component';
+import { GrupoVeiculoCriarComponent } from './grupoVeiculo/criar/grupo-veiculo-criar.component';
+import { GrupoVeiculoListarComponent } from './grupoVeiculo/listar/grupo-veiculo-listar.component';
 import { HomeComponent } from './home/home.component';
 import { ParceiroCriarComponent } from './parceiro/criar/parceiro-criar.component';
 import { ParceiroEditarComponent } from './parceiro/editar/parceiro-editar.component';
 import { ParceiroListarComponent } from './parceiro/listar/parceiro-listar.component';
+import { GrupoVeiculoListViewModel } from './shared/viewModels/grupoVeiculo/GrupoVeiculoListViewModel';
 import { TaxaCriarComponent } from './taxa/criar/taxa-criar.component';
 import { TaxaEditarComponent } from './taxa/editar/taxa-editar.component';
 import { TaxaListarComponent } from './taxa/listar/taxa-listar.component';
@@ -28,7 +31,9 @@ const routes: Routes = [
   { path: 'funcionario/editar/:id', component: EditarFuncionarioComponent },
   { path: 'taxa/criar', component: TaxaCriarComponent },
   { path: 'taxa/listar', component: TaxaListarComponent },
-  { path: 'taxa/editar/:id', component: TaxaEditarComponent }
+  { path: 'taxa/editar/:id', component: TaxaEditarComponent },
+  { path: 'grupoVeiculo/listar', component: GrupoVeiculoListarComponent },
+  { path: 'grupoVeiculo/criar', component: GrupoVeiculoCriarComponent }
 ];
 
 @NgModule({

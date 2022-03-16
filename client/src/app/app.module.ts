@@ -32,6 +32,9 @@ import { TaxaCriarComponent } from './taxa/criar/taxa-criar.component';
 import { TaxaListarComponent } from './taxa/listar/taxa-listar.component';
 import { TaxaEditarComponent } from './taxa/editar/taxa-editar.component';
 import { HttpTaxaService } from './taxa/services/http-taxa.service';
+import { GrupoVeiculoListarComponent } from './grupoVeiculo/listar/grupo-veiculo-listar.component';
+import { HttpGrupoVeiculoService } from './grupoVeiculo/services/http-grupo-veiculo.service';
+import { GrupoVeiculoCriarComponent } from './grupoVeiculo/criar/grupo-veiculo-criar.component';
 
 registerLocaleData(ptBr);
 
@@ -56,7 +59,9 @@ registerLocaleData(ptBr);
     FormatarEnumPipe,
     TaxaCriarComponent,
     TaxaListarComponent,
-    TaxaEditarComponent
+    TaxaEditarComponent,
+    GrupoVeiculoListarComponent,
+    GrupoVeiculoCriarComponent
 
   ],
   imports: [
@@ -73,6 +78,7 @@ registerLocaleData(ptBr);
     { provide: 'IHttpCupomServiceToken', useClass: HttpCupomService },
     { provide: 'IHttpFuncionarioServiceToken', useClass: HttpFuncionarioService },
     { provide: 'IHttpTaxaServiceToken', useClass: HttpTaxaService },
+    { provide: 'IHttpGrupoVeiculoServiceToken', useClass: HttpGrupoVeiculoService },
     { provide: 'LOCALE_ID', useValue: 'pt' }
   ],
   bootstrap: [AppComponent]

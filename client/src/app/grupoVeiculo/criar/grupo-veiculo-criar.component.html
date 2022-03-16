@@ -1,0 +1,113 @@
+<div class="container main-container">
+    <h4>Cadastrar Grupo Veiculo</h4>
+    <hr />
+     <form novalidate [formGroup]="cadastroForm" (ngSubmit)='adicionarGrupoVeiculo()'  > 
+    
+        <div class="form-group" >
+            <label class="col-md-2 control-label" for="nome">Nome</label>
+            <div class="col-md-10">
+                <input class="form-control" id="nome" type="text" placeholder="Nome (requerido)"
+                    formControlName="nome" />
+                    <span
+                    *ngIf="cadastroForm.controls.nome.errors && (cadastroForm.controls.nome.dirty || cadastroForm.controls.nome.touched)"
+                    class="alert">
+                    Campo Nome é obrigatório
+                </span>
+            </div>
+
+            <label class="col-md-2 control-label" for="valorDia">Plano Diário - Valor pago por dia</label>
+            <div class="col-md-10">
+                <input class="form-control" id="valorDia" type="number" placeholder="Valor por Dia(requerido)"
+                    formControlName="valorDia" />
+                    <span
+                    *ngIf="cadastroForm.controls.valorDia.errors && (cadastroForm.controls.valorDia.dirty || cadastroForm.controls.valorDia.touched)"
+                    class="alert">
+                    Campo Valor Dia é obrigatório
+                </span>
+            </div>
+
+            <label class="col-md-2 control-label" for="planoDiarioValorDia">Plano Diário - Valor pago por dia</label>
+            <div class="col-md-10">
+                <input class="form-control" id="planoDiarioValorDia" type="number" placeholder="Valor por Dia(requerido)"
+                    formControlName="planoDiarioValorDia" />
+                    <span
+                    *ngIf="cadastroForm.controls.planoDiarioValorDia.errors && (cadastroForm.controls.planoDiarioValorDia.dirty || cadastroForm.controls.planoDiarioValorDia.touched)"
+                    class="alert">
+                    Campo Valor Dia é obrigatório
+                </span>
+            </div>
+
+            <label class="col-md-2 control-label" for="planoDiarioKmRodado">Plano Diário - Valor por KM rodado</label>
+            <div class="col-md-10">
+                <input class="form-control" id="planoDiarioKmRodado" type="number" placeholder="Valor KM Rodado(requerido)"
+                    formControlName="planoDiarioKmRodado" />
+                    <span
+                    *ngIf="cadastroForm.controls.planoDiarioKmRodado.errors && (cadastroForm.controls.planoDiarioKmRodado.dirty || cadastroForm.controls.planoDiarioKmRodado.touched)"
+                    class="alert">
+                    Campo KM Rodado é obrigatório
+                </span>
+            </div>
+
+            <hr>
+
+            <label class="col-md-2 control-label" for="planoInclusoValorDia">Plano KM Incluso - Valor pago por dia</label>
+            <div class="col-md-10">
+                <input class="form-control" id="planoInclusoValorDia" type="number" placeholder="Valor por Dia(requerido)"
+                    formControlName="planoInclusoValorDia" />
+                    <span
+                    *ngIf="cadastroForm.controls.planoInclusoValorDia.errors && (cadastroForm.controls.planoInclusoValorDia.dirty || cadastroForm.controls.planoInclusoValorDia.touched)"
+                    class="alert">
+                    Campo Valor Dia é obrigatório
+                </span>
+            </div>
+
+            <label class="col-md-2 control-label" for="planoInclusoKmIncluso">Plano KM Incluso - Quilometragem inclusa</label>
+            <div class="col-md-10">
+                <input class="form-control" id="planoInclusoKmIncluso" type="number" placeholder="Valor KM Rodado(requerido)"
+                    formControlName="planoInclusoKmIncluso" />
+                    <span
+                    *ngIf="cadastroForm.controls.planoInclusoKmIncluso.errors && (cadastroForm.controls.planoInclusoKmIncluso.dirty || cadastroForm.controls.planoInclusoKmIncluso.touched)"
+                    class="alert">
+                    Campo KM inclusa é obrigatório
+                </span>
+            </div>
+
+            <label class="col-md-2 control-label" for="planoInclusoKmRodado">Plano KM Incluso - Valor por KM rodado</label>
+            <div class="col-md-10">
+                <input class="form-control" id="planoInclusoKmRodado" type="number" placeholder="Valor KM Rodado(requerido)"
+                    formControlName="planoInclusoKmRodado" />
+                    <span
+                    *ngIf="cadastroForm.controls.planoInclusoKmRodado.errors && (cadastroForm.controls.planoInclusoKmRodado.dirty || cadastroForm.controls.planoInclusoKmRodado.touched)"
+                    class="alert">
+                    Campo KM Rodado é obrigatório
+                </span>
+            </div>
+
+            <hr>
+            <label class="col-md-2 control-label" for="planoLivreValorDia">Plano KM Livre - Valor pago por dia</label>
+            <div class="col-md-10">
+                <input class="form-control" id="planoLivreValorDia" type="number" placeholder="Valor por Dia(requerido)"
+                    formControlName="planoLivreValorDia" />
+                    <span
+                    *ngIf="cadastroForm.controls.planoLivreValorDia.errors && (cadastroForm.controls.planoLivreValorDia.dirty || cadastroForm.controls.planoLivreValorDia.touched)"
+                    class="alert">
+                    Campo Valor Dia é obrigatório
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="col-md-4 col-md-offset-2">
+                <span><button class="btn btn-success" id="registrar" type="submit">Registrar</button></span>
+                <span><button class="btn btn-danger" id="cancelar" (click)="cancelar()">Cancelar</button></span>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+       
+    </form>
+</div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts> 
+

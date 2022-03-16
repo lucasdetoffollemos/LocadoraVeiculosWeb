@@ -34,9 +34,6 @@ namespace LocadoraVeiculos.WebApi.ViewModels
         {
             public int Id { get; set; }
             public string Nome { get; set; }
-
-            public List<PlanoCobrancaDetailViewModel> PlanosCobranca { get; set; }
-
         }
 
         public class GrupoVeiculoDetailsViewModel
